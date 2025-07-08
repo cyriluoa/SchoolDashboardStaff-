@@ -47,6 +47,9 @@ object Constants {
     const val GRADE_LOWER_LIMIT = 1
     const val GRADE_UPPER_LIMIT = 12
 
+    const val SUBJECTS_COLLECTION = "subjects"
+
+
 
 
 }

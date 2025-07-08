@@ -21,6 +21,7 @@
         <activity android:name=".ui.dashboard.superAdmin.SuperAdminDashboardActivity"/>
         <activity android:name=".ui.dashboard.teacher.TeacherDashboardActivity"/>
         <activity android:name=".ui.schoolclass.AddEditSchoolClassActivity"/>
+        <activity android:name=".ui.dashboard.schoolAdmin.subjects.AddEditSubjectActivity"/>
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true">

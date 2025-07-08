@@ -13,4 +13,6 @@ data class User(
     val email: String = "",
     val role: UserRole = UserRole.TEACHER, // default
     val schoolId: String = "",
+    val classIds: List<String>? = null,         //Only for teachers
+    val subjectIds: List<String>? = null        //Only for teachers and students
 ) : Parcelable

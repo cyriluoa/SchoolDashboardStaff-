@@ -18,5 +18,7 @@ data class School(
     val numberOfStudents: Int = 0,
     val numberOfTeachers: Int = 0,
     val numberOfClasses: Int = 0
-): Parcelable
+): Parcelable {
+
+}
 

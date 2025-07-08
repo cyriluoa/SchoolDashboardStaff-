@@ -1,4 +1,4 @@
-package com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes
+package com.example.schooldashboardstaff.ui.dashboard.schoolAdmin
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +12,8 @@ import com.example.schooldashboardstaff.R
 import com.example.schooldashboardstaff.data.firebase.SchoolManager
 import com.example.schooldashboardstaff.data.model.User
 import com.example.schooldashboardstaff.databinding.FragmentSchoolAdminDashboardBinding
+import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes.SchoolClassesFragment
+import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.subjects.SubjectsFragment
 import com.example.schooldashboardstaff.utils.Constants
 
 class SchoolAdminDashboardFragment: Fragment() {
@@ -79,7 +81,10 @@ class SchoolAdminDashboardFragment: Fragment() {
         }
 
         binding.itemSubjects.setOnClickListener {
-            Toast.makeText(requireContext(), "Navigate to Subjects", Toast.LENGTH_SHORT).show()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, SubjectsFragment(), "SubjectsFragment")
+                .addToBackStack("SubjectsFragment")
+                .commit()
         }
 
         binding.itemStudents.setOnClickListener {

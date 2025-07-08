@@ -1,24 +1,19 @@
 package com.example.schooldashboardstaff.ui.dashboard.schoolAdmin
 
-import android.annotation.SuppressLint
-import android.os.Build
+
 import android.os.Bundle
-import android.util.Log
+
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+
 import com.example.schooldashboardstaff.R
 import com.example.schooldashboardstaff.data.firebase.SchoolManager
-import com.example.schooldashboardstaff.data.model.School
 import com.example.schooldashboardstaff.data.model.User
 import com.example.schooldashboardstaff.databinding.ActivitySchoolAdminDashboardBinding
-import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes.SchoolAdminDashboardFragment
 import com.example.schooldashboardstaff.utils.Constants
 
 class SchoolAdminDashboardActivity : AppCompatActivity() {
