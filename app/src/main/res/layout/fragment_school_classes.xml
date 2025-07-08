@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        android:background="#F5F5F5">
+
+        <!-- RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvClasses"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="160dp"
+            android:layout_above="@id/layoutMissingGrades" />
+
+        <!-- Missing Grades Message + Button -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/layoutMissingGrades"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="96dp"
+            android:layout_marginHorizontal="12dp"
+            android:visibility="gone"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="@android:color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/tvMissingGradesMsg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Some grades are missing. You can enter them manually or use this feature to populate automatically."
+                    android:textSize="13.66sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:id="@+id/btnPopulateMissingGrades"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Populate Missing Grades"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_red"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- FAB -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAddClass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="16dp"
+            android:contentDescription="Add Class"
+            app:srcCompat="@drawable/ic_add"
+            app:backgroundTint="@color/primary_red"
+            app:tint="@android:color/white" />
+
+    </RelativeLayout>
+</layout>

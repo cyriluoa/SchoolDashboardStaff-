@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Red Theme Colors -->
+    <color name="primary_red">#E74C3C</color>
+    <color name="primary_red_dark">#C0392B</color>
+    <color name="primary_red_light">#FF6B6B</color>
+
+    <!-- Accent Colors -->
+    <color name="red_accent">#FF5722</color>
+    <color name="red_background_light">#FFEBEE</color>
+
+
+    <!-- Standard Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray_light">#F5F5F5</color>
+    <color name="gray_medium">#9E9E9E</color>
+    <color name="gray_dark">#424242</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_hint">#BDBDBD</color>
+
+    <color name="green">#2E7D32</color> <!-- or any green shade -->
+    <color name="red">#D32F2F</color>   <!-- matches primary red theme -->
+
+</resources>

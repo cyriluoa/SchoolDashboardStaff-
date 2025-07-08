@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F5F5F5">
+
+        <!-- AppBar containing red header and tabs -->
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="4dp">
+
+            <!-- Red Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/primary_red"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvDashboardTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Super Admin Dashboard"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:contentDescription="Super Admin Dashboard Title" />
+
+                <TextView
+                    android:id="@+id/tvWelcomeAdmin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Welcome back, Administrator"
+                    android:textColor="#FFEEEE"
+                    android:textSize="14sp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:contentDescription="Welcome message for super admin" />
+            </LinearLayout>
+
+            <!-- Tab Bar -->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                app:tabMode="fixed"
+                app:tabGravity="fill"
+                app:tabSelectedTextColor="@color/primary_red"
+                app:tabTextColor="#666666"
+                app:tabIndicatorColor="@color/primary_red"
+                app:tabIndicatorHeight="3dp"
+                app:tabTextAppearance="@style/TabTextStyle"
+                app:tabRippleColor="@color/primary_red" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!-- ViewPager2 Content Area -->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:background="#F5F5F5" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

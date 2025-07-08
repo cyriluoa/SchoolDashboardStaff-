@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/login_gradient_background"
+        android:orientation="vertical">
+
+        <!-- Shiny Red Top Bar -->
+        <View
+            android:id="@+id/topRedBar"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:background="@drawable/shiny_red_bar" />
+
+        <!-- Main Content Container -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="32dp">
+
+                <!-- Welcome Text -->
+                <TextView
+                    android:id="@+id/tvWelcome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/tvWelcomeAESText"
+                    android:textColor="@color/primary_red"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32dp"
+                    android:gravity="center"
+                    android:text="@string/tvSubtitleAESText"
+                    android:textColor="#666666"
+                    android:textSize="16sp" />
+
+                <!-- School Information Card -->
+                <LinearLayout
+                    android:id="@+id/llSchoolForm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/red_background_light"
+                    android:elevation="8dp"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/school_information"
+                        android:textColor="@color/primary_red"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <!-- School Name Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilSchoolName"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/school_name"
+                        app:boxStrokeColor="@color/primary_red"
+                        app:hintTextColor="@color/primary_red"
+                        app:startIconTint="@color/primary_red">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etSchoolName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapWords"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- School Location Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilSchoolLocation"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/school_location"
+                        app:boxStrokeColor="@color/primary_red"
+                        app:hintTextColor="@color/primary_red"
+                        app:startIconTint="@color/primary_red">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etSchoolLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapWords"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Grade Range Section -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:text="@string/grade_range"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- Starting Grade -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilGradeStart"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_weight="1"
+                            android:hint="@string/starting_grade"
+                            app:boxStrokeColor="@color/primary_red"
+                            app:hintTextColor="@color/primary_red">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etGradeStart"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:text="@string/_1"
+                                android:textSize="16sp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Ending Grade -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilGradeEnd"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:hint="@string/ending_grade"
+                            app:boxStrokeColor="@color/primary_red"
+                            app:hintTextColor="@color/primary_red">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etGradeEnd"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:text="@string/_12"
+                                android:textSize="16sp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Admin Information Card -->
+                <LinearLayout
+                    android:id="@+id/llAdminForm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/red_background_light"
+                    android:elevation="8dp"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/school_administrator"
+                            android:textColor="@color/primary_red"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+
+
+
+                    </LinearLayout>
+
+                    <!-- Admin List Container -->
+                    <LinearLayout
+                        android:id="@+id/llAdminContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!-- First Admin Form -->
+                        <LinearLayout
+                            android:id="@+id/llAdminForm1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginBottom="16dp"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:id="@+id/tvAdminNumber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="12dp"
+                                android:text="@string/adminNumberText"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <!-- First Name -->
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tilAdminFirstName1"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="12dp"
+                                android:hint="@string/first_name"
+                                app:boxStrokeColor="@color/primary_red"
+                                app:hintTextColor="@color/primary_red">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etAdminFirstName1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="textCapWords"
+                                    android:textSize="14sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <!-- Last Name -->
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tilAdminLastName1"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="12dp"
+                                android:hint="@string/last_name"
+                                app:boxStrokeColor="@color/primary_red"
+                                app:hintTextColor="@color/primary_red">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etAdminLastName1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="textCapWords"
+                                    android:textSize="14sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <!-- Username -->
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tilAdminUsername1"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="12dp"
+                                android:hint="@string/username"
+                                app:boxStrokeColor="@color/primary_red"
+                                app:hintTextColor="@color/primary_red">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etAdminUsername1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="text"
+                                    android:textSize="14sp" />
+
+
+                                <!-- Username Availability Status -->
+                                <TextView
+                                    android:id="@+id/tvUsernameStatus"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text=""
+                                    android:textSize="12sp"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginStart="4dp"
+                                    android:textColor="@android:color/darker_gray"/>
+
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <!-- Email -->
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tilAdminEmail1"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="12dp"
+                                android:hint="@string/email"
+                                app:boxStrokeColor="@color/primary_red"
+                                app:hintTextColor="@color/primary_red">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etAdminEmail1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="textEmailAddress"
+                                    android:textSize="14sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <!-- Password -->
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tilAdminPassword1"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/password"
+                                app:boxStrokeColor="@color/primary_red"
+                                app:endIconMode="password_toggle"
+                                app:endIconTint="@color/primary_red"
+                                app:hintTextColor="@color/primary_red">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etAdminPassword1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="textPassword"
+                                    android:textSize="14sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <!-- Register Button -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnRegisterSchool"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/red_button_background"
+                    android:elevation="4dp"
+                    android:text="@string/register_school"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <!-- Progress Bar (Hidden by default) -->
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:indeterminateTint="@color/primary_red"
+                    android:visibility="gone" />
+
+                <!-- Footer Text -->
+                <TextView
+                    android:id="@+id/tvFooter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center"
+                    android:text="@string/setting_up_your_school_management_system"
+                    android:textColor="#999999"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+</layout>

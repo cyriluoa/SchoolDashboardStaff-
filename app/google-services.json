@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "236159278874",
+    "project_id": "school-dashboard-ed5fa",
+    "storage_bucket": "school-dashboard-ed5fa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:236159278874:android:b10bc7d390948274e616a3",
+        "android_client_info": {
+          "package_name": "com.example.schooldashboardstaff"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaOdBc9mPVGbqdvagZbe5gw3BtmFsNodk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

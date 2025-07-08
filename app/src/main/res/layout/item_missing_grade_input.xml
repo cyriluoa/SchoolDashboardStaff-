@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mcvMissingGrade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginHorizontal="4dp"
+        android:elevation="4dp"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:strokeWidth="3dp"
+        app:strokeColor="@color/red">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Grade Header Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- Grade Label -->
+                <TextView
+                    android:id="@+id/tvGrade"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Grade 5"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/primary_red" />
+
+                <!-- Section Count -->
+                <EditText
+                    android:id="@+id/etSectionCount"
+                    android:layout_width="48dp"
+                    android:layout_height="36dp"
+                    android:inputType="number"
+                    android:hint="0"
+                    android:maxLength="2"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="8dp"
+                    android:padding="4dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Green Check -->
+                    <ImageView
+                        android:id="@+id/ivCompleteCheck"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginBottom="12dp"
+                        android:src="@drawable/ic_red_circle"
+                        />
+
+                    <!-- Expand/Collapse Icon -->
+                    <ImageView
+                        android:id="@+id/ivExpandToggle"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_expand"
+                        android:layout_marginStart="8dp"
+                        app:tint="@color/primary_red_light" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Section Inputs Container -->
+            <LinearLayout
+                android:id="@+id/containerSectionInputs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="12dp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>
