@@ -2,6 +2,7 @@ package com.example.schooldashboardstaff.data.firebase
 
 import com.example.schooldashboardstaff.data.model.Subject
 import com.example.schooldashboardstaff.utils.Constants
+import com.google.firebase.firestore.ListenerRegistration
 
 class SubjectManager(private val schoolId: String) : FirestoreManager() {
 
@@ -30,4 +31,32 @@ class SubjectManager(private val schoolId: String) : FirestoreManager() {
             .addOnSuccessListener { onSuccess() }
             .addOnFailureListener { onFailure(it) }
     }
+
+
+    /**
+     * Listens for changes to subjects collection,
+     * sorted by grade and then by displayName.
+     */
+    fun listenToSubjects(
+        onSubjectsChanged: (List<Subject>) -> Unit,
+        onError: (Exception) -> Unit
+    ): ListenerRegistration {
+        return subjectsRef
+            .orderBy("grade")
+            .orderBy("displayName")
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    onError(error)
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null) {
+                    val subjects = snapshot.documents.mapNotNull { doc ->
+                        doc.toObject(Subject::class.java)
+                    }
+                    onSubjectsChanged(subjects)
+                }
+            }
+    }
+
 }

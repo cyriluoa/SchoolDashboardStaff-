@@ -23,7 +23,7 @@ class SubjectsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var adapter: SubjectAdapter
-    private val subjects = mutableListOf<Subject>() // Replace with your data source
+    private lateinit var subjectViewModel: SubjectsViewModel
 
     private val sharedViewModel: SharedSchoolViewModel by activityViewModels()
     private var currentSchool: School? = null
@@ -44,6 +44,16 @@ class SubjectsFragment : Fragment() {
         sharedViewModel.school.observe(viewLifecycleOwner) { school ->
             currentSchool = school
             // You can also load subjects here once you implement Firestore
+            // Initialize ViewModel
+            subjectViewModel = SubjectsViewModel(school.id)
+
+            // Start listening to Firestore
+            subjectViewModel.startListeningToSubjects()
+
+            // Observe subject data
+            subjectViewModel.subjects.observe(viewLifecycleOwner) { subjects ->
+                adapter.submitList(subjects)
+            }
         }
 
 

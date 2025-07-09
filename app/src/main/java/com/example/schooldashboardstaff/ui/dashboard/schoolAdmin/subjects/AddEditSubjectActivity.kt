@@ -1,5 +1,6 @@
 package com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.subjects
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -74,6 +75,7 @@ class AddEditSubjectActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun setUpSubmitButton() {
         binding.btnSubmitSubject.setOnClickListener {
             val name = binding.etSubjectName.text.toString().trim()
@@ -90,7 +92,7 @@ class AddEditSubjectActivity : AppCompatActivity() {
                 name = name.uppercase(),
                 displayName = displayName,
                 grade = grade,
-                colorResId = selectedColor
+                colorInt = selectedColor
             )
 
             viewModel.addSubject(subject, school.id)

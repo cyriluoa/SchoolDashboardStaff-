@@ -26,8 +26,8 @@ class SubjectAdapter : ListAdapter<Subject, SubjectAdapter.SubjectViewHolder>(Di
             binding.tvClassesAssigned.text = "Classes: ${subject.classIds.size}"
 
             // Styling
-            binding.subjectCard.strokeColor =
-                ContextCompat.getColor(binding.root.context, R.color.primary_red)
+            binding.subjectCard.strokeColor = subject.colorInt
+
 
             // Optional click listener if needed:
             // binding.root.setOnClickListener { ... }
