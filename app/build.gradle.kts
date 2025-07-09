@@ -1,9 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt)
     id("com.google.gms.google-services")
-    id("kotlin-kapt")
     id("kotlin-parcelize")
+    id("kotlin-kapt")
 }
 
 android {
@@ -62,7 +63,8 @@ dependencies {
 
 
 
-
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
 
     implementation(libs.androidx.core.ktx)

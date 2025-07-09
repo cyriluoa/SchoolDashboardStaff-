@@ -6,11 +6,13 @@ import com.example.schooldashboardstaff.data.firebase.UserManager
 import com.example.schooldashboardstaff.data.model.User
 import com.google.firebase.Firebase
 import com.google.firebase.functions.functions
+import javax.inject.Inject
 
-class AuthRepository(
-    private val authManager: AuthManager = AuthManager(),
-    private val userManager: UserManager = UserManager()
-) {
+class AuthRepository @Inject constructor(
+    private val authManager: AuthManager,
+    private val userManager: UserManager
+)
+ {
 
     fun loginWithUsername(
         username: String,

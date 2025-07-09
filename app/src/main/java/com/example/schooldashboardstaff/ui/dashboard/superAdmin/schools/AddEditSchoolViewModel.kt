@@ -7,10 +7,13 @@ import androidx.lifecycle.ViewModel
 import com.example.schooldashboardstaff.data.firebase.UserManager
 import com.example.schooldashboardstaff.data.model.School
 import com.example.schooldashboardstaff.data.repository.SchoolRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 
-class AddEditSchoolViewModel(
-    private val schoolRepository: SchoolRepository = SchoolRepository()
-) : ViewModel() {
+@HiltViewModel
+class AddEditSchoolViewModel @Inject constructor(
+    private val schoolRepository: SchoolRepository
+): ViewModel() {
 
     private val _isUsernameAvailable = MutableLiveData<Boolean?>()
     val isUsernameAvailable: LiveData<Boolean?> = _isUsernameAvailable

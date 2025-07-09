@@ -14,8 +14,10 @@ import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.SchoolAdminDash
 import com.example.schooldashboardstaff.ui.dashboard.superAdmin.SuperAdminDashboardActivity
 import com.example.schooldashboardstaff.ui.dashboard.teacher.TeacherDashboardActivity
 import com.example.schooldashboardstaff.utils.Constants
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null

@@ -3,8 +3,9 @@ package com.example.schooldashboardstaff.data.firebase
 
 import com.google.firebase.Firebase
 import com.google.firebase.functions.functions
+import javax.inject.Inject
 
-class AuthManager: FirestoreManager() {
+class AuthManager @Inject constructor(): FirestoreManager() {
 
     fun signInWithEmailAndPassword(
         email: String,

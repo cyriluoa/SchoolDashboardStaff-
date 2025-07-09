@@ -20,7 +20,9 @@ import com.example.schooldashboardstaff.data.model.DisplaySchool
 import com.example.schooldashboardstaff.databinding.FragmentSchoolsBinding
 import com.example.schooldashboardstaff.utils.Constants
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SchoolsFragment : Fragment() {
 
     private var _binding: FragmentSchoolsBinding? = null

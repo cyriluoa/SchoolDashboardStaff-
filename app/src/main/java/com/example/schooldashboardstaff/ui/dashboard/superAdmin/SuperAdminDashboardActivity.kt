@@ -7,7 +7,9 @@ import com.example.schooldashboardstaff.data.model.User
 import com.example.schooldashboardstaff.databinding.ActivitySuperAdminDashboardBinding
 import com.example.schooldashboardstaff.utils.Constants
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SuperAdminDashboardActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySuperAdminDashboardBinding

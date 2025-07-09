@@ -7,9 +7,12 @@ import androidx.lifecycle.ViewModel
 import com.example.schooldashboardstaff.data.model.DisplaySchool
 import com.example.schooldashboardstaff.data.model.School
 import com.example.schooldashboardstaff.data.repository.SchoolRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 
-class SchoolsViewModel(
-    private val schoolRepository: SchoolRepository = SchoolRepository()
+@HiltViewModel
+class SchoolsViewModel  @Inject constructor(
+    private val schoolRepository: SchoolRepository
 ) : ViewModel() {
 
     private val _displaySchools = MutableLiveData<List<DisplaySchool>>()

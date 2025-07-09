@@ -3,8 +3,9 @@ package com.example.schooldashboardstaff.data.firebase
 import android.util.Log
 import com.example.schooldashboardstaff.data.model.User
 import com.example.schooldashboardstaff.utils.Constants
+import javax.inject.Inject
 
-class UserManager: FirestoreManager() {
+class UserManager @Inject constructor(): FirestoreManager() {
 
     private val usersRef = db.collection(Constants.USERS_COLLECTION)
     private val usernamesRef = db.collection(Constants.USERNAMES_COLLECTION)

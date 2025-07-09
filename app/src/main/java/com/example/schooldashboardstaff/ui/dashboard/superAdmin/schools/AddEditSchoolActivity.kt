@@ -13,7 +13,9 @@ import androidx.core.content.ContextCompat
 import com.example.schooldashboardstaff.R
 import com.example.schooldashboardstaff.databinding.ActivityAddEditSchoolBinding
 import com.example.schooldashboardstaff.utils.Constants
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AddEditSchoolActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddEditSchoolBinding

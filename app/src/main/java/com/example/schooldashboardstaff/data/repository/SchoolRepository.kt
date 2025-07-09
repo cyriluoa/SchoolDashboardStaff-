@@ -7,17 +7,17 @@ import com.example.schooldashboardstaff.data.firebase.UserManager
 import com.example.schooldashboardstaff.data.model.School
 import com.example.schooldashboardstaff.data.model.User
 import com.example.schooldashboardstaff.data.model.UserRole
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SchoolRepository {
-
-    private val authManager: AuthManager = AuthManager()
-    private val userManager: UserManager = UserManager()
-    private val schoolManager: SchoolManager = SchoolManager()
-    private val authRepository: AuthRepository = AuthRepository()
-
-
-
-
+@Singleton
+class SchoolRepository @Inject constructor(
+    private val authManager: AuthManager,
+    private val userManager: UserManager,
+    private val schoolManager: SchoolManager,
+    private val authRepository: AuthRepository
+)
+{
 
     fun createSchoolWithAdmin(
         school: School,

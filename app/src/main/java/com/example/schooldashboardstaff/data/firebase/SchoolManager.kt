@@ -5,8 +5,9 @@ import com.example.schooldashboardstaff.data.model.School
 import com.example.schooldashboardstaff.data.model.User
 import com.example.schooldashboardstaff.utils.Constants
 import com.google.firebase.firestore.ListenerRegistration
+import javax.inject.Inject
 
-class SchoolManager : FirestoreManager(){
+class SchoolManager @Inject constructor(): FirestoreManager(){
 
 
     val schoolsRef = db.collection(Constants.SCHOOLS_COLLECTION)

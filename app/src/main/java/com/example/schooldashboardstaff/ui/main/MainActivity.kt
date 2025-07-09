@@ -6,7 +6,9 @@ import androidx.databinding.DataBindingUtil
 import com.example.schooldashboardstaff.R
 import com.example.schooldashboardstaff.databinding.ActivityMainBinding
 import com.example.schooldashboardstaff.ui.login.LoginFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

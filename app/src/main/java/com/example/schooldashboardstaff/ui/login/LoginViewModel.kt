@@ -5,10 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.schooldashboardstaff.data.model.User
 import com.example.schooldashboardstaff.data.repository.AuthRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 
-class LoginViewModel(
-    private val authRepository: AuthRepository = AuthRepository()
-) : ViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    private val authRepository: AuthRepository
+) : ViewModel()
+ {
 
     private val _loginResult = MutableLiveData<Result<User>>()
     val loginResult: LiveData<Result<User>> = _loginResult
