@@ -1,0 +1,70 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.search.fragments.SearchSubjectsFragment">
+
+        <!-- Periods Left Text -->
+        <TextView
+            android:id="@+id/tvPeriodsLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="12dp"
+            android:text="Periods Left: 40"
+            android:textSize="16sp"
+            android:textColor="@color/primary_red"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSubjects"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_above="@+id/bottomButtonLayout"
+            android:layout_below="@+id/tvPeriodsLeft"
+            android:padding="16dp"
+            android:clipToPadding="false"
+            tools:listitem="@layout/item_subject_search" />
+
+        <LinearLayout
+            android:id="@+id/bottomButtonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:weightSum="2">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancel"
+                android:layout_width="0dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancel"
+                android:backgroundTint="@color/white"
+                android:textColor="@color/primary_red"
+                app:strokeColor="@color/primary_red"
+                app:strokeWidth="2dp"
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnAssignSubjects"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:text="@string/assign"
+                android:background="@drawable/red_button_background"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</layout>

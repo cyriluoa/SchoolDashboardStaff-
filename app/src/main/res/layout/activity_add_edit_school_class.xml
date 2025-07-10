@@ -91,8 +91,8 @@
                             android:layout_height="24dp"
                             android:layout_marginEnd="12dp"
                             android:src="@drawable/ic_school"
-                            android:tint="@color/primary_red"
-                            android:contentDescription="Class Info Icon" />
+                            android:contentDescription="Class Info Icon"
+                            app:tint="@color/primary_red" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -191,13 +191,13 @@
 
                         <!-- Max Subjects -->
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/tilMaxSubjects"
+                            android:id="@+id/tilMaxPeriods"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_weight="1"
-                            android:hint="Max Subjects"
+                            android:hint="Max Periods"
                             app:boxStrokeColor="@color/primary_red"
                             app:hintTextColor="@color/primary_red"
                             app:startIconTint="@color/primary_red">

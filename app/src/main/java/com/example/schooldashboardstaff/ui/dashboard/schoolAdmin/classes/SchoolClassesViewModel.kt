@@ -55,14 +55,15 @@ class SchoolClassesViewModel(private val school: School) : ViewModel() {
             for (section in gradeInput.sectionInputs) {
                 val sectionChar = section.sectionName
                 val maxStudents = section.maxStudents.toIntOrNull() ?: continue
-                val maxSubjects = section.maxSubjects.toIntOrNull() ?: continue
+                val maxPeriods = section.maxPeriods.toIntOrNull() ?: continue
 
                 val schoolClass = SchoolClass(
                     schoolId = school.id, // from ViewModel constructor
                     grade = gradeInput.grade,
                     section = sectionChar,
                     maxStudents = maxStudents,
-                    maxSubjects = maxSubjects
+                    maxPeriods = maxPeriods,
+                    periodsLeft = maxPeriods
                 )
                 newClasses.add(schoolClass)
             }

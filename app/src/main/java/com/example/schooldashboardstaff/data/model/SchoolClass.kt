@@ -13,15 +13,18 @@ data class SchoolClass(
     val subjectAssignments: Map<String, String> = emptyMap(),
     val studentIds: List<String> = emptyList(),
 
-    val maxSubjects: Int = 0,
+    val maxPeriods: Int = 40,
     val maxStudents: Int = 0,
+    val periodsLeft : Int = 40,
 
     val createdAt: Long = System.currentTimeMillis()
 ) {
     val isStable: Boolean
         get() = classTeacherId != null &&
-                subjectAssignments.size == maxSubjects &&
+                periodsLeft == 0 &&
                 studentIds.isNotEmpty()
+
+
 
     val isFull: Boolean
         get() = studentIds.size >= maxStudents

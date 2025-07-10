@@ -147,19 +147,19 @@ class MissingGradeAdapter(
 
                 maxStudentsInputLayout.addView(maxStudentsEditText)
 
-                val maxSubjectsInputLayout = TextInputLayout(binding.root.context).apply {
-                    hint = "Max Subjects"
+                val maxPeriodsInputLayout = TextInputLayout(binding.root.context).apply {
+                    hint = "Max Periods"
                 }
 
                 val maxSubjectsEditText = TextInputEditText(binding.root.context).apply {
                     inputType = InputType.TYPE_CLASS_NUMBER
-                    setText(sectionInput.maxSubjects)
+                    setText(sectionInput.maxPeriods)
                 }
 
                 maxSubjectsEditText.doAfterTextChanged {
                     val newVal = it.toString()
-                    if (newVal != sectionInput.maxSubjects) {
-                        sectionInput.maxSubjects = newVal
+                    if (newVal != sectionInput.maxPeriods) {
+                        sectionInput.maxPeriods = newVal
                         if (item.isCompleted) {
                             item.isCompleted = false
                             updateCompletionState(item)
@@ -168,11 +168,11 @@ class MissingGradeAdapter(
                     }
                 }
 
-                maxSubjectsInputLayout.addView(maxSubjectsEditText)
+                maxPeriodsInputLayout.addView(maxSubjectsEditText)
 
                 sectionLayout.addView(label)
                 sectionLayout.addView(maxStudentsInputLayout)
-                sectionLayout.addView(maxSubjectsInputLayout)
+                sectionLayout.addView(maxPeriodsInputLayout)
 
                 binding.containerSectionInputs.addView(sectionLayout)
             }
@@ -196,7 +196,7 @@ class MissingGradeAdapter(
                 text = "Confirm"
                 setOnClickListener {
                     val allValid = item.sectionInputs.all {
-                        it.maxStudents.isNotEmpty() && it.maxSubjects.isNotEmpty()
+                        it.maxStudents.isNotEmpty() && it.maxPeriods.isNotEmpty()
                     }
 
                     if (allValid) {

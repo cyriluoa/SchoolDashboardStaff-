@@ -55,5 +55,14 @@
     <string name="unstable">🔴 Unstable</string>
     <string name="grade_5_section_a">Grade 5 - Section A</string>
     <string name="populate_missing_grades_underlined"><![CDATA[<u>Populate Missing Grades</u>]]></string>
+    <string name="create_teacher">Create Teacher</string>
+    <string name="add_teacher_icon">Add Teacher Icon</string>
+    <string name="create">CREATE</string>
+    <string name="periods">Periods:</string>
+    <string name="clear_search">Clear Search</string>
+    <string name="search">Search</string>
+    <string name="search_icon">Search Icon</string>
+    <string name="assign">Assign</string>
+    <string name="create_subject">Create Subject</string>
 
 </resources>

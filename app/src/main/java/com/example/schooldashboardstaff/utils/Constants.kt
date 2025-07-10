@@ -37,17 +37,26 @@ object Constants {
     const val SCHOOL_CLASSES_COLLECTION = "school_classes"
 
     const val SCHOOL_CLASSES_FIELD_GRADE = "grade"
+    const val GRADE_KEY = "grade"
+
+    const val PERIODS_LEFT_KEY = "periodsLeft"
     const val SCHOOL_CLASSES_FIELD_SECTION = "section"
 
     const val INTENT_SCHOOL_ID = "school_id"
     const val INTENT_CLASS_OBJECT = "school_class_object"
-
-
-
     const val GRADE_LOWER_LIMIT = 1
     const val GRADE_UPPER_LIMIT = 12
 
     const val SUBJECTS_COLLECTION = "subjects"
+    const val MAX_PERIODS_KEY = "max_periods"
+
+    const val CLASS_ID_KEY = "class_id"
+
+    const val SEARCH_TYPE_KEY = "search_type"
+    const val SEARCH_SUBJECTS = "SEARCH_SUBJECTS"
+    const val SEARCH_TEACHERS = "SEARCH_TEACHERS"
+    const val SEARCH_CLASSES = "SEARCH_CLASSES"
+    const val SEARCH_STUDENTS = "SEARCH_STUDENTS"
 
 
 

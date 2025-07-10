@@ -1,5 +1,6 @@
 package com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -9,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.schooldashboardstaff.R
 import com.example.schooldashboardstaff.databinding.ItemSchoolClassBinding
 import com.example.schooldashboardstaff.data.model.SchoolClass
+import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.search.SearchActivity
+import com.example.schooldashboardstaff.utils.Constants
 
 class SchoolClassAdapter : ListAdapter<SchoolClass, SchoolClassAdapter.ClassViewHolder>(DiffCallback()) {
 
@@ -33,15 +36,27 @@ class SchoolClassAdapter : ListAdapter<SchoolClass, SchoolClassAdapter.ClassView
             } ?: "Class Teacher: Not assigned"
 
             // Subjects assigned
-            val subjectsAssigned = schoolClass.subjectAssignments.size
-            binding.tvSubjectsAssigned.text = "Subjects Assigned: $subjectsAssigned"
+            val PeriodsAssigned = schoolClass.maxPeriods - schoolClass.periodsLeft
+            binding.tvSubjectsAssigned.text = "Subjects Assigned: ${schoolClass.subjectAssignments.toString()}"
 
             // Subject progress
-            binding.tvSubjectsInfo.text = "Subjects: $subjectsAssigned / ${schoolClass.maxSubjects}"
+            binding.tvPeriodsInfo.text = "Periods: $PeriodsAssigned / ${schoolClass.maxPeriods}"
 
             // Students
             val studentCount = schoolClass.studentIds.size
             binding.tvStudentsInfo.text = "Students: $studentCount / ${schoolClass.maxStudents}"
+            binding.btnAssignSubjects.setOnClickListener {
+                val context = binding.root.context
+                val intent = Intent(context, SearchActivity::class.java).apply {
+                    putExtra(Constants.SEARCH_TYPE_KEY, Constants.SEARCH_SUBJECTS)
+                    putExtra(Constants.SCHOOL_ID_KEY, schoolClass.schoolId)
+                    putExtra(Constants.CLASS_ID_KEY, schoolClass.id)
+                    putExtra(Constants.GRADE_KEY, schoolClass.grade)
+                    putExtra(Constants.PERIODS_LEFT_KEY, schoolClass.periodsLeft)
+                }
+                context.startActivity(intent)
+            }
+
         }
     }
 

@@ -77,7 +77,7 @@ class AddEditSchoolClassActivity : AppCompatActivity() {
                 schoolId = currentSchool.id,
                 grade = grade,
                 maxStudents = maxStudents,
-                maxSubjects = maxSubjects
+                maxPeriods = maxSubjects
             )
         }
 

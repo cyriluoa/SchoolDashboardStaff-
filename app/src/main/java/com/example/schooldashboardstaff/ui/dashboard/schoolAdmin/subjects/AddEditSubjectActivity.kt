@@ -80,10 +80,16 @@ class AddEditSubjectActivity : AppCompatActivity() {
         binding.btnSubmitSubject.setOnClickListener {
             val name = binding.etSubjectName.text.toString().trim()
             val gradeText = binding.spinnerGrade.text.toString().removePrefix("Grade ").trim()
+            val periods = binding.etPeriodCount.text.toString().trim().toIntOrNull()
             val grade = gradeText.toIntOrNull()
 
-            if (name.isEmpty() || grade == null) {
-                Toast.makeText(this, "Please enter valid subject name and grade", Toast.LENGTH_SHORT).show()
+            if(periods != null && (periods > 12 || periods < 1)){
+                Toast.makeText(this, "Please enter number of periods between 1 and 12", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (name.isEmpty() || grade == null || periods == null) {
+                Toast.makeText(this, "Please enter valid subject name and grade and periods", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -92,7 +98,8 @@ class AddEditSubjectActivity : AppCompatActivity() {
                 name = name.uppercase(),
                 displayName = displayName,
                 grade = grade,
-                colorInt = selectedColor
+                colorInt = selectedColor,
+                periodCount = periods
             )
 
             viewModel.addSubject(subject, school.id)

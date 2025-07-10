@@ -11,8 +11,7 @@ data class Subject(
     val grade: Int = 0,
     val teacherIds: List<String> = emptyList(),
     val classIds: List<String> = emptyList(),
+    val periodCount: Int = 0,
     @ColorInt
     val colorInt: Int = Color.RED
-
-
 )

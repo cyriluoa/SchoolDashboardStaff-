@@ -15,14 +15,15 @@ class AddEditSchoolClassViewModel : ViewModel() {
         schoolId: String,
         grade: Int,
         maxStudents: Int,
-        maxSubjects: Int
+        maxPeriods: Int,
     ) {
         val repo = SchoolClassRepository(schoolId)
         val schoolClass = SchoolClass(
             schoolId = schoolId,
             grade = grade,
             maxStudents = maxStudents,
-            maxSubjects = maxSubjects
+            maxPeriods = maxPeriods,
+            periodsLeft = maxPeriods
             // section handled by repo
         )
 

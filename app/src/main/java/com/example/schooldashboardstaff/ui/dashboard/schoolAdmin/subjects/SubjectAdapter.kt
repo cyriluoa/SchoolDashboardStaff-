@@ -25,6 +25,8 @@ class SubjectAdapter : ListAdapter<Subject, SubjectAdapter.SubjectViewHolder>(Di
             // Assigned classes
             binding.tvClassesAssigned.text = "Classes: ${subject.classIds.size}"
 
+            binding.tvPeriodsAssigned.text = "Periods: ${subject.periodCount}"
+
             // Styling
             binding.subjectCard.strokeColor = subject.colorInt
 

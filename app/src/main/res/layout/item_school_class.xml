@@ -20,15 +20,38 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Grade & Section -->
-            <TextView
-                android:id="@+id/tvGradeSection"
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/grade_5_section_a"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvGradeSection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/grade_5_section_a"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/ivStatus"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginBottom="12dp"
+                    android:src="@drawable/ic_red_circle"
+                    app:tint = "@color/primary_red"/>
+
+
+            </LinearLayout>
+
+            <!-- Grade & Section -->
 
             <!-- Stability status -->
             <TextView
@@ -69,11 +92,11 @@
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/tvSubjectsInfo"
+                    android:id="@+id/tvPeriodsInfo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/subjects_4_6"
+                    android:text="@string/periods"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
 
@@ -86,6 +109,94 @@
                     android:textColor="@color/black"
                     android:textSize="13sp"
                     android:gravity="end" />
+            </LinearLayout>
+
+
+
+            <!-- Red line separator -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/red" />
+
+            <!-- Action buttons row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:paddingTop="4dp">
+
+                <!-- Assign Students Button -->
+                <ImageButton
+                    android:id="@+id/btnAssignStudents"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_add_student"
+                    android:visibility="gone"
+                    android:contentDescription="Assign Students"
+                    app:tint="@color/primary_red" />
+
+                <!-- Assign Teachers Button -->
+                <ImageButton
+                    android:id="@+id/btnAssignTeachers"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_assign_teachers"
+                    android:contentDescription="Assign Teachers"
+                    android:visibility="gone"
+                    app:tint="@color/primary_red" />
+
+                <!-- Assign Class Teacher Button -->
+                <ImageButton
+                    android:id="@+id/btnAssignClassTeacher"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_add_class_teacher"
+                    android:contentDescription="Assign Class Teacher"
+                    android:visibility="gone"
+                    app:tint="@color/primary_red" />
+
+                <!-- Assign Subjects Button -->
+                <ImageButton
+                    android:id="@+id/btnAssignSubjects"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_add_subject"
+                    android:contentDescription="Asssign Subjects"
+                    app:tint="@color/primary_red" />
+
+                <!-- Edit Button -->
+                <ImageButton
+                    android:id="@+id/btnEdit"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_edit"
+                    android:contentDescription="Edit"
+                    app:tint="@color/primary_red" />
+
+                <!-- Delete Button -->
+                <ImageButton
+                    android:id="@+id/btnDelete"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_delete"
+                    android:contentDescription="Delete"
+                    app:tint="@color/primary_red" />
+
             </LinearLayout>
 
         </LinearLayout>
