@@ -23,6 +23,9 @@
     <color name="text_hint">#BDBDBD</color>
 
     <color name="green">#2E7D32</color> <!-- or any green shade -->
-    <color name="red">#D32F2F</color>   <!-- matches primary red theme -->
+    <color name="red">#B31524</color>   <!-- matches primary red theme -->
+    <color name="purple">#5E6A1AB1</color>
+    <color name="yellow">#DEEDD096</color>
+    <color name="blue">#2196F3</color>
 
 </resources>

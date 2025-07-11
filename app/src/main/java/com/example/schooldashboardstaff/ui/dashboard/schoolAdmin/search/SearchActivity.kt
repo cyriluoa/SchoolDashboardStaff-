@@ -1,6 +1,7 @@
 package com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.search
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -27,9 +28,12 @@ class SearchActivity : AppCompatActivity() {
         val classId = intent.getStringExtra(Constants.CLASS_ID_KEY)
         val grade = intent.getIntExtra(Constants.GRADE_KEY, 0)
         val periodsLeft = intent.getIntExtra(Constants.PERIODS_LEFT_KEY, 40)
+        val subjectKeys = intent.getStringArrayExtra(Constants.SUBJECTS_IDS_FIELD_SCHOOL_CLASSES_KEY)
 
-        if (searchType == null || schoolId == null || classId == null) {
-            finishWithError("Missing searchType, schoolId, or classId")
+
+
+        if (searchType == null || schoolId == null || classId == null || subjectKeys == null) {
+            finishWithError("Missing searchType, schoolId, or classId, or subjectKeys")
             return
         }
         // Set up clear button
@@ -43,16 +47,17 @@ class SearchActivity : AppCompatActivity() {
         }
 
         // Load appropriate fragment
-        loadSearchFragment(searchType, schoolId,classId,grade,periodsLeft)
+        loadSearchFragment(searchType, schoolId,classId,grade,periodsLeft,subjectKeys)
     }
 
-    private fun loadSearchFragment(searchType: String, schoolId: String, classId: String, grade: Int,periodsLeft: Int ) {
+    private fun loadSearchFragment(searchType: String, schoolId: String, classId: String, grade: Int,periodsLeft: Int, keysList: Array<String> ) {
         val fragment: Fragment = when (searchType) {
             Constants.SEARCH_SUBJECTS -> SearchSubjectsFragment.newInstance(
                 schoolId = schoolId,
                 classId = classId,
                 grade = grade,
-                periodsLeft = periodsLeft
+                periodsLeft = periodsLeft,
+                assignedSubjectIds = keysList
             )
 //            Constants.SEARCH_TEACHERS -> SearchTeachersFragment.newInstance(schoolId)
 //            Constants.SEARCH_CLASSES -> SearchClassesFragment.newInstance(schoolId)

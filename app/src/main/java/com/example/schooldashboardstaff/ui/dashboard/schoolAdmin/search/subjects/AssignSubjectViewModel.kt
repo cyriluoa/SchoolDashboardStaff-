@@ -25,7 +25,8 @@ class AssignSubjectViewModel @Inject constructor(
         schoolId: String,
         classId: String,
         selectedSubjects: List<Subject>,
-        periodsLeft: Int
+        periodsLeft: Int,
+        existingAssignments: Set<String>
     ) {
         viewModelScope.launch {
             try {
@@ -33,7 +34,8 @@ class AssignSubjectViewModel @Inject constructor(
                     schoolId,
                     classId,
                     selectedSubjects,
-                    periodsLeft
+                    periodsLeft,
+                    existingAssignments
                 )
                 _assignmentSuccess.value = true
             } catch (e: Exception) {

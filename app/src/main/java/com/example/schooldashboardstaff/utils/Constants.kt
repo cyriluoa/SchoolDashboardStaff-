@@ -53,6 +53,8 @@ object Constants {
     const val CLASS_ID_KEY = "class_id"
 
     const val SEARCH_TYPE_KEY = "search_type"
+
+    const val SUBJECTS_IDS_FIELD_SCHOOL_CLASSES_KEY = "SUBJECTS_IDS_FIELD_SCHOOL_CLASSES_KEY"
     const val SEARCH_SUBJECTS = "SEARCH_SUBJECTS"
     const val SEARCH_TEACHERS = "SEARCH_TEACHERS"
     const val SEARCH_CLASSES = "SEARCH_CLASSES"

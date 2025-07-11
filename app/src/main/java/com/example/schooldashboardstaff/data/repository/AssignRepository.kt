@@ -11,8 +11,9 @@ class AssignRepository @Inject constructor(
         schoolId: String,
         classId: String,
         selectedSubjects: List<Subject>,
-        periodsLeft: Int
+        periodsLeft: Int,
+        assignedSubjects : Set<String>
     ) {
-        assignManager.assignSubjectsToClass(schoolId, classId, selectedSubjects, periodsLeft)
+        assignManager.assignSubjectsToClass(schoolId, classId, selectedSubjects, periodsLeft, assignedSubjects)
     }
 }

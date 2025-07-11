@@ -13,7 +13,8 @@ class AssignManager @Inject constructor() : FirestoreManager() {
         schoolId: String,
         classId: String,
         selectedSubjects: List<Subject>,
-        periodsLeft: Int
+        periodsLeft: Int,
+        assignedSet: Set<String>
     ) {
         val classRef = db.collection(Constants.SCHOOLS_COLLECTION)
             .document(schoolId)
@@ -24,14 +25,17 @@ class AssignManager @Inject constructor() : FirestoreManager() {
             .document(schoolId)
             .collection(Constants.SUBJECTS_COLLECTION)
 
-
-
-
         db.runBatch { batch ->
-            // ✅ 1. Update subjectAssignments in class
-            val assignments = selectedSubjects.associate { it.id to "" }
+            // ✅ 1. Merge new + old assignments
+            val allAssignments = buildMap {
+                // Add old ones
+                assignedSet.forEach { put(it, "") }
+                // Add new ones (overwriting if needed — keys are unique)
+                selectedSubjects.forEach { put(it.id, "") }
+            }
+
             batch.update(classRef, mapOf(
-                "subjectAssignments" to assignments,
+                "subjectAssignments" to allAssignments,
                 "periodsLeft" to periodsLeft
             ))
 
@@ -43,3 +47,4 @@ class AssignManager @Inject constructor() : FirestoreManager() {
         }.await()
     }
 }
+

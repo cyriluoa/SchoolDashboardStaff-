@@ -8,9 +8,15 @@ import javax.inject.Inject
 class SearchRepository @Inject constructor(
     private val searchManager: SearchManager
 ) {
-    suspend fun getSubjectsForGrade(schoolId: String, grade: Int): List<Subject> {
-        return searchManager.getSubjectsForGrade(schoolId, grade)
+    suspend fun getUnassignedSubjectsForGrade(
+        schoolId: String,
+        grade: Int,
+        assignedSubjectIds: Set<String>
+    ): List<Subject> {
+        val allSubjects = searchManager.getSubjectsForGrade(schoolId, grade)
+        return allSubjects.filterNot { it.id in assignedSubjectIds }
     }
+
 
     // You can later add:
     // suspend fun getClassesForGrade(...)

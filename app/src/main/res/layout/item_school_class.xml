@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@string/unstable"
-                android:textColor="@color/red"
+                android:textColor="@color/black"
                 android:textSize="14sp" />
 
             <!-- Class Teacher -->
@@ -80,6 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@string/subjects_assigned_math_science"
+                android:visibility="gone"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -115,6 +116,7 @@
 
             <!-- Red line separator -->
             <View
+                android:id="@+id/viewSeperator"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="12dp"

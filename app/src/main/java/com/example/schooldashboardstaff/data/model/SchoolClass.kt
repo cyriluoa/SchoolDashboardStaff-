@@ -28,4 +28,16 @@ data class SchoolClass(
 
     val isFull: Boolean
         get() = studentIds.size >= maxStudents
+
+
+    val state: SchoolClassState
+        get() = when {
+            isFull -> SchoolClassState.STABLE_CLASS_FULL
+            isStable -> SchoolClassState.STABLE_STUDENTS_PRESENT
+            classTeacherId != null -> SchoolClassState.UNSTABLE_CLASS_TEACHER_ASSIGNED
+            periodsLeft == 0 -> SchoolClassState.UNSTABLE_NO_PERIODS_LEFT
+            subjectAssignments.isNotEmpty() -> SchoolClassState.UNSTABLE_SUBJECTS_ASSIGNED
+            else -> SchoolClassState.UNSTABLE_SUBJECTS_NOT_ASSIGNED
+        }
+
 }

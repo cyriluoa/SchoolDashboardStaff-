@@ -1,6 +1,7 @@
 package com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.search.subjects
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,8 @@ class SearchSubjectsFragment : Fragment() {
     private var grade: Int = 0
     private var periodsLeft: Int = 40
 
+    private lateinit var assignedSubjectIdsSet : Set<String>
+
     private val selectedSubjects = mutableListOf<Subject>()
 
     companion object {
@@ -39,14 +42,16 @@ class SearchSubjectsFragment : Fragment() {
             schoolId: String,
             classId: String,
             grade: Int = 0,
-            periodsLeft: Int = 40
+            periodsLeft: Int = 40,
+            assignedSubjectIds: Array<String>
         ): SearchSubjectsFragment {
             return SearchSubjectsFragment().apply {
                 arguments = bundleOf(
                     Constants.SCHOOL_ID_KEY to schoolId,
                     Constants.CLASS_ID_KEY to classId,
                     Constants.GRADE_KEY to grade,
-                    Constants.MAX_PERIODS_KEY to periodsLeft
+                    Constants.MAX_PERIODS_KEY to periodsLeft,
+                    Constants.SUBJECTS_IDS_FIELD_SCHOOL_CLASSES_KEY to assignedSubjectIds
                 )
             }
         }
@@ -67,11 +72,14 @@ class SearchSubjectsFragment : Fragment() {
         classId = arguments?.getString(Constants.CLASS_ID_KEY) ?: return
         grade = arguments?.getInt(Constants.GRADE_KEY) ?: 0
         periodsLeft = arguments?.getInt(Constants.MAX_PERIODS_KEY) ?: 40
+        val stringArray = arguments?.getStringArray(Constants.SUBJECTS_IDS_FIELD_SCHOOL_CLASSES_KEY)
+        assignedSubjectIdsSet = stringArray?.toSet() ?: emptySet()
+
 
         setupAdapter()
         setupListeners()
 
-        searchViewModel.initSearch(schoolId, grade)
+        searchViewModel.initSearch(schoolId, grade, assignedSubjectIdsSet)
 
         searchViewModel.subjects.observe(viewLifecycleOwner) {
             adapter.submitList(it.toList())
@@ -141,7 +149,8 @@ class SearchSubjectsFragment : Fragment() {
                 schoolId = schoolId,
                 classId = classId,
                 selectedSubjects = selectedSubjects,
-                periodsLeft = periodsLeft
+                periodsLeft = periodsLeft,
+                existingAssignments = assignedSubjectIdsSet
             )
         }
     }

@@ -28,9 +28,15 @@ class SharedSearchViewModel @Inject constructor(
     private var currentSchoolId: String? = null
     private var currentGrade: Int? = null
 
-    fun initSearch(schoolId: String, grade: Int) {
+    private var assignedSubjectIds: Set<String> = emptySet()
+
+
+
+
+    fun initSearch(schoolId: String, grade: Int, assignedIds: Set<String>) {
         currentSchoolId = schoolId
         currentGrade = grade
+        assignedSubjectIds = assignedIds
         fetchSubjects() // initial load
     }
 
@@ -47,11 +53,16 @@ class SharedSearchViewModel @Inject constructor(
         viewModelScope.launch {
             _loading.value = true
             try {
-                val allSubjects = searchRepository.getSubjectsForGrade(schoolId, grade)
+                val unassignedSubjects = searchRepository.getUnassignedSubjectsForGrade(
+                    schoolId = schoolId,
+                    grade = grade,
+                    assignedSubjectIds = assignedSubjectIds
+                )
+
                 _subjects.value = if (queryText.isBlank()) {
-                    allSubjects
+                    unassignedSubjects
                 } else {
-                    allSubjects.filter {
+                    unassignedSubjects.filter {
                         it.name.contains(queryText, ignoreCase = true)
                     }
                 }
@@ -63,5 +74,6 @@ class SharedSearchViewModel @Inject constructor(
             }
         }
     }
+
 }
 
