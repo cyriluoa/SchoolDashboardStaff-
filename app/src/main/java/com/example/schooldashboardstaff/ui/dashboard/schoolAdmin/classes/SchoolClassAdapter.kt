@@ -35,7 +35,7 @@ class SchoolClassAdapter : ListAdapter<SchoolClass, SchoolClassAdapter.ClassView
 
             // Subjects assigned
             val periodsAssigned = schoolClass.maxPeriods - schoolClass.periodsLeft
-            binding.tvSubjectsAssigned.text = "Subjects Assigned: ${schoolClass.subjectAssignments}"
+            binding.tvSubjectsAssigned.text = "Subjects Assigned: ${schoolClass.subjectAssignments.size}"
 
             // Subject progress
             binding.tvPeriodsInfo.text = "Periods: $periodsAssigned / ${schoolClass.maxPeriods}"

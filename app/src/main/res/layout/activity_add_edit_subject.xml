@@ -143,41 +143,73 @@
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Grade Selection -->
+                    <!-- Grade Range Section -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="Select Grade Level"
+                        android:layout_marginBottom="12dp"
+                        android:text="@string/grade_range"
                         android:textColor="@color/text_primary"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilGradeSpinner"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
-                        android:hint="Choose Grade"
-                        app:boxStrokeColor="@color/primary_red"
-                        app:hintTextColor="@color/primary_red"
-                        app:startIconTint="@color/primary_red">
+                        android:orientation="horizontal">
 
-                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                            android:id="@+id/spinnerGrade"
-                            android:layout_width="match_parent"
+                        <!-- Starting Grade -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilGradeStart"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:inputType="none"
-                            android:textSize="16sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:layout_marginEnd="8dp"
+                            android:layout_weight="1"
+                            android:hint="@string/starting_grade"
+                            app:boxStrokeColor="@color/primary_red"
+                            app:hintTextColor="@color/primary_red">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etGradeStart"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:text="@string/_1"
+                                android:textSize="16sp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Ending Grade -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilGradeEnd"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:hint="@string/ending_grade"
+                            app:boxStrokeColor="@color/primary_red"
+                            app:hintTextColor="@color/primary_red">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etGradeEnd"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:text="@string/_12"
+                                android:textSize="16sp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
 
                     <!-- Color Picker Section -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="vertical">
 
                         <LinearLayout

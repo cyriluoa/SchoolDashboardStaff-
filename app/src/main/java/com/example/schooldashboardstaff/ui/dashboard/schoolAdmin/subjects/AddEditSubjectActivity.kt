@@ -36,18 +36,12 @@ class AddEditSubjectActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[AddEditSubjectViewModel::class.java]
 
-        setUpGradeSpinner()
         setUpObservers()
         setUpColorPicker()
         setUpSubmitButton()
         setUpCancelButton()
     }
 
-    private fun setUpGradeSpinner() {
-        val grades = (school.startingGrade..school.finalGrade).map { "Grade $it" }
-        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, grades)
-        binding.spinnerGrade.setAdapter(adapter)
-    }
 
     private fun setUpObservers() {
         viewModel.isLoading.observe(this) { isLoading ->
@@ -79,30 +73,42 @@ class AddEditSubjectActivity : AppCompatActivity() {
     private fun setUpSubmitButton() {
         binding.btnSubmitSubject.setOnClickListener {
             val name = binding.etSubjectName.text.toString().trim()
-            val gradeText = binding.spinnerGrade.text.toString().removePrefix("Grade ").trim()
-            val periods = binding.etPeriodCount.text.toString().trim().toIntOrNull()
-            val grade = gradeText.toIntOrNull()
+            val startGrade = binding.etGradeStart.text.toString().toIntOrNull()
+            val endGrade = binding.etGradeEnd.text.toString().toIntOrNull()
+            val periods = binding.etPeriodCount.text.toString().toIntOrNull()
 
-            if(periods != null && (periods > 12 || periods < 1)){
+            if (name.isEmpty() || startGrade == null || endGrade == null || periods == null) {
+                Toast.makeText(this, "Please fill all fields correctly", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (startGrade > endGrade) {
+                Toast.makeText(this, "Start grade cannot be greater than end grade", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (startGrade < school.startingGrade || endGrade > school.finalGrade) {
+                Toast.makeText(this, "Grade range must be between ${school.startingGrade} and ${school.finalGrade}", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (periods !in 1..12) {
                 Toast.makeText(this, "Please enter number of periods between 1 and 12", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if (name.isEmpty() || grade == null || periods == null) {
-                Toast.makeText(this, "Please enter valid subject name and grade and periods", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            val subjects = (startGrade..endGrade).map { grade ->
+                val displayName = "$name - Grade $grade"
+                Subject(
+                    name = name.uppercase(),
+                    displayName = displayName,
+                    grade = grade,
+                    colorInt = selectedColor,
+                    periodCount = periods
+                )
             }
 
-            val displayName = "$name - Grade $grade"
-            val subject = Subject(
-                name = name.uppercase(),
-                displayName = displayName,
-                grade = grade,
-                colorInt = selectedColor,
-                periodCount = periods
-            )
-
-            viewModel.addSubject(subject, school.id)
+            viewModel.addSubjectsBatch(subjects, school.id)
             finish()
         }
     }

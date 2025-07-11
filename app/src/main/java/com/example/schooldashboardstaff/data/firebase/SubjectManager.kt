@@ -14,23 +14,32 @@ class SubjectManager(private val schoolId: String) : FirestoreManager() {
      * Adds a new subject to the current school.
      * If ID is empty, generates one automatically.
      */
-    fun addSubject(
-        subject: Subject,
+    /**
+     * Adds multiple subjects in a batch write.
+     */
+    fun addSubjectsBatch(
+        subjects: List<Subject>,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        val docRef = if (subject.id.isNotEmpty()) {
-            subjectsRef.document(subject.id)
-        } else {
-            subjectsRef.document()
+        val batch = db.batch()
+
+        subjects.forEach { subject ->
+            val docRef = if (subject.id.isNotEmpty()) {
+                subjectsRef.document(subject.id)
+            } else {
+                subjectsRef.document()
+            }
+
+            val subjectWithId = subject.copy(id = docRef.id)
+            batch.set(docRef, subjectWithId)
         }
 
-        val subjectWithId = subject.copy(id = docRef.id)
-
-        docRef.set(subjectWithId)
+        batch.commit()
             .addOnSuccessListener { onSuccess() }
             .addOnFailureListener { onFailure(it) }
     }
+
 
 
     /**

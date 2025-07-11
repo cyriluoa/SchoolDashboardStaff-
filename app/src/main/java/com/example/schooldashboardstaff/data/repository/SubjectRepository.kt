@@ -8,12 +8,12 @@ class SubjectRepository(private val schoolId: String) {
 
     private val subjectManager = SubjectManager(schoolId)
 
-    fun addSubject(
-        subject: Subject,
+    fun addSubjectsBatch(
+        subjects: List<Subject>,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        subjectManager.addSubject(subject, onSuccess, onFailure)
+        subjectManager.addSubjectsBatch(subjects, onSuccess, onFailure)
     }
 
     fun listenToSubjects(

@@ -14,24 +14,28 @@ class AddEditSubjectViewModel : ViewModel() {
     private val _statusMessage = MutableLiveData<String?>()
     val statusMessage: LiveData<String?> = _statusMessage
 
+    private var repository: SubjectRepository? = null
 
-
-    /**
-     * Adds a subject to Firestore using the provided schoolId.
-     */
-    fun addSubject(subject: Subject, schoolId: String) {
-        val repository = SubjectRepository(schoolId)
+    fun addSubjectsBatch(subjects: List<Subject>, schoolId: String) {
+        if (subjects.isEmpty()) {
+            _statusMessage.value = "No subjects to add"
+            return
+        }
 
         _isLoading.value = true
-        repository.addSubject(
-            subject,
+        if (repository == null) {
+            repository = SubjectRepository(schoolId)
+        }
+
+        repository?.addSubjectsBatch(
+            subjects,
             onSuccess = {
                 _isLoading.value = false
-                _statusMessage.value = "Subject added successfully!"
+                _statusMessage.value = "Subjects added successfully!"
             },
-            onFailure = {
+            onFailure = { exception ->
                 _isLoading.value = false
-                _statusMessage.value = "Failed to add subject: ${it.message}"
+                _statusMessage.value = "Failed to add subjects: ${exception.message}"
             }
         )
     }
