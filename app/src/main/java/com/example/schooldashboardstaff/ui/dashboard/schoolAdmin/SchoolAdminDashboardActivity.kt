@@ -15,7 +15,10 @@ import com.example.schooldashboardstaff.data.firebase.SchoolManager
 import com.example.schooldashboardstaff.data.model.User
 import com.example.schooldashboardstaff.databinding.ActivitySchoolAdminDashboardBinding
 import com.example.schooldashboardstaff.utils.Constants
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class SchoolAdminDashboardActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySchoolAdminDashboardBinding

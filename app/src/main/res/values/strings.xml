@@ -64,5 +64,7 @@
     <string name="search_icon">Search Icon</string>
     <string name="assign">Assign</string>
     <string name="create_subject">Create Subject</string>
+    <string name="assign_subjec">Assign Subjects</string>
+    <string name="max_periods">Max Periods</string>
 
 </resources>

@@ -14,6 +14,7 @@ import com.example.schooldashboardstaff.data.model.User
 import com.example.schooldashboardstaff.databinding.FragmentSchoolAdminDashboardBinding
 import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes.SchoolClassesFragment
 import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.subjects.SubjectsFragment
+import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.teachers.TeachersFragment
 import com.example.schooldashboardstaff.utils.Constants
 
 class SchoolAdminDashboardFragment: Fragment() {
@@ -77,7 +78,10 @@ class SchoolAdminDashboardFragment: Fragment() {
         }
 
         binding.itemTeachers.setOnClickListener {
-            Toast.makeText(requireContext(), "Navigate to Teachers", Toast.LENGTH_SHORT).show()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, TeachersFragment(), "TeachersFragment")
+                .addToBackStack("TeachersFragment")
+                .commit()
         }
 
         binding.itemSubjects.setOnClickListener {

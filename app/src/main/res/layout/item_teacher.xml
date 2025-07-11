@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="teacher"
+            type="com.example.schooldashboardstaff.data.model.User" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/teacherCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:layout_marginHorizontal="6dp"
+        app:cardElevation="3dp"
+        app:cardCornerRadius="16dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:strokeWidth="4dp"
+        app:strokeColor="@color/red">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Teacher Username -->
+            <TextView
+                android:id="@+id/tvTeacherUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{teacher.username}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <!-- Full Name -->
+            <TextView
+                android:id="@+id/tvTeacherFullName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text='@{teacher.firstname + " " + teacher.lastname}'
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <!-- Subjects and Classes -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvSubjectsAssigned"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text='@{"Subjects: " + teacher.subjectIds.size()}'
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tvClassesAssigned"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text='@{"Classes: " + teacher.classIds.size()}'
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:gravity="end" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

@@ -112,6 +112,7 @@
                         android:layout_marginBottom="16dp"
                         android:hint="Subject Name"
                         app:boxStrokeColor="@color/primary_red"
+                        android:textColorHint="@color/primary_red"
                         app:hintTextColor="@color/primary_red"
                         app:startIconTint="@color/primary_red">
 
@@ -119,6 +120,7 @@
                             android:id="@+id/etSubjectName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/black"
                             android:inputType="textCapWords"
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -132,6 +134,7 @@
                         android:layout_marginBottom="16dp"
                         android:hint="Number of Periods"
                         app:boxStrokeColor="@color/primary_red"
+                        android:textColorHint="@color/primary_red"
                         app:hintTextColor="@color/primary_red"
                         app:startIconTint="@color/primary_red">
 
@@ -139,6 +142,7 @@
                             android:id="@+id/etPeriodCount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/black"
                             android:inputType="number"
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -167,6 +171,7 @@
                             android:layout_marginEnd="8dp"
                             android:layout_weight="1"
                             android:hint="@string/starting_grade"
+                            android:textColorHint="@color/primary_red"
                             app:boxStrokeColor="@color/primary_red"
                             app:hintTextColor="@color/primary_red">
 
@@ -175,6 +180,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
+                                android:textColor="@color/black"
                                 android:text="@string/_1"
                                 android:textSize="16sp" />
 
@@ -189,6 +195,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_weight="1"
                             android:hint="@string/ending_grade"
+                            android:textColorHint="@color/primary_red"
                             app:boxStrokeColor="@color/primary_red"
                             app:hintTextColor="@color/primary_red">
 
@@ -198,6 +205,7 @@
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
                                 android:text="@string/_12"
+                                android:textColor="@color/black"
                                 android:textSize="16sp" />
 
                         </com.google.android.material.textfield.TextInputLayout>

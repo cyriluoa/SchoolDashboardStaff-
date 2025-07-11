@@ -65,6 +65,7 @@
                         android:layout_marginBottom="12dp"
                         android:hint="@string/first_name"
                         app:boxStrokeColor="@color/primary_red"
+                        android:textColorHint="@color/primary_red"
                         app:hintTextColor="@color/primary_red">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -72,6 +73,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textCapWords"
+                            android:textColor="@android:color/black"
                             android:textSize="14sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -85,6 +87,7 @@
                         android:layout_marginBottom="12dp"
                         android:hint="@string/last_name"
                         app:boxStrokeColor="@color/primary_red"
+                        android:textColorHint="@color/primary_red"
                         app:hintTextColor="@color/primary_red">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -92,6 +95,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textCapWords"
+                            android:textColor="@android:color/black"
                             android:textSize="14sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -105,6 +109,7 @@
                         android:layout_marginBottom="12dp"
                         android:hint="@string/username"
                         app:boxStrokeColor="@color/primary_red"
+                        android:textColorHint="@color/primary_red"
                         app:hintTextColor="@color/primary_red">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -112,8 +117,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text"
+                            android:textColor="@android:color/black"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/tvTeacherUsernameStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/darker_gray"
+                        android:layout_marginTop="4dp"/>
 
                     <!-- Email -->
                     <com.google.android.material.textfield.TextInputLayout
@@ -124,6 +138,7 @@
                         android:layout_marginBottom="12dp"
                         android:hint="@string/email"
                         app:boxStrokeColor="@color/primary_red"
+                        android:textColorHint="@color/primary_red"
                         app:hintTextColor="@color/primary_red">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -131,6 +146,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textEmailAddress"
+                            android:textColor="@android:color/black"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -145,6 +161,7 @@
                         app:endIconMode="password_toggle"
                         app:endIconTint="@color/primary_red"
                         app:boxStrokeColor="@color/primary_red"
+                        android:textColorHint="@color/primary_red"
                         app:hintTextColor="@color/primary_red">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -152,53 +169,45 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textPassword"
+                            android:textColor="@android:color/black"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Class Teacher Toggle -->
-                    <LinearLayout
+                    <!-- Max Periods -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilTeacherMaxPeriods1"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="16dp"
-                        android:gravity="center_vertical">
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/max_periods"
+                        app:boxStrokeColor="@color/primary_red"
+                        android:textColorHint="@color/primary_red"
+                        app:hintTextColor="@color/primary_red">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTeacherMaxPeriods1"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Is Class Teacher?"
-                            android:textColor="#888888"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:inputType="number"
+                            android:textColor="@android:color/black"
+                            android:textSize="14sp" />
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
-                            android:id="@+id/switchClassTeacher"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:thumbTint="@color/primary_red"
-                            android:trackTint="@color/red_background_light" />
-                    </LinearLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <TextView
-                        android:id="@+id/tvSelectedClass"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Selected Class: None"
-                        android:textSize="14sp"
-                        android:layout_marginTop="8dp"
-                        android:visibility="gone"
-                        android:textColor="@color/text_primary" />
-
+                    <!-- Assign Subjects Button -->
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnChooseClass"
+                        android:id="@+id/btnAssignSubjects1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Choose Class"
-                        android:layout_marginTop="8dp"
-                        android:visibility="gone"
+                        android:layout_height="48dp"
                         android:background="@drawable/red_button_background"
+                        android:elevation="2dp"
+                        android:text="@string/assign_subjec"
                         android:textColor="@color/white"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+
 
                 </LinearLayout>
 
