@@ -1,6 +1,5 @@
 package com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.search.subjects
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -11,7 +10,7 @@ import com.example.schooldashboardstaff.databinding.ItemSubjectSearchBinding
 
 class SearchSubjectAdapter(
     private val onSubjectSelected: (Subject, Boolean) -> Unit,
-    private val canSelect : (Subject) -> Boolean
+    private val canSelect: (Subject) -> Boolean
 ) : ListAdapter<Subject, SearchSubjectAdapter.SubjectViewHolder>(DiffCallback()) {
 
     private var selectedSubjects = mutableSetOf<String>()
@@ -19,6 +18,11 @@ class SearchSubjectAdapter(
 
     fun setPeriodsLeft(newLeft: Int) {
         periodsLeft = newLeft
+    }
+
+    fun setSelectedSubjectIds(subjectIds: Set<String>) {
+        selectedSubjects = subjectIds.toMutableSet()
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubjectViewHolder {
@@ -39,23 +43,21 @@ class SearchSubjectAdapter(
             val isSelected = selectedSubjects.contains(subject.id)
 
             binding.subject = subject
-            binding.selected = isSelected
-            binding.executePendingBindings() // 💡 Make sure to trigger data binding
+            binding.executePendingBindings()
 
-            // Styling
             binding.subjectCard.strokeColor = subject.colorInt
 
-            // Disable if not enough periods
-            binding.cbSelectSubject.isEnabled = isSelected || subject.periodCount <= periodsLeft
-
-
+            // Set checkbox state explicitly without triggering the listener
             binding.cbSelectSubject.setOnCheckedChangeListener(null)
+            binding.cbSelectSubject.isChecked = isSelected
+
+            // Enable checkbox if enough periods or it's already selected
+            binding.cbSelectSubject.isEnabled = isSelected || subject.periodCount <= periodsLeft
 
             binding.cbSelectSubject.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     if (!canSelect(subject)) {
-                        // ❌ Not enough periods left
-                        binding.cbSelectSubject.isChecked = false // Reset manually
+                        binding.cbSelectSubject.isChecked = false
                         return@setOnCheckedChangeListener
                     }
                     selectedSubjects.add(subject.id)
@@ -66,13 +68,11 @@ class SearchSubjectAdapter(
                 onSubjectSelected(subject, isChecked)
             }
 
-
             binding.subjectCard.setOnClickListener {
                 val newChecked = !binding.cbSelectSubject.isChecked
                 binding.cbSelectSubject.isChecked = newChecked
             }
         }
-
     }
 
     class DiffCallback : DiffUtil.ItemCallback<Subject>() {

@@ -134,7 +134,6 @@ class SearchSubjectsFragment : Fragment() {
     private fun setupAdapter() {
         adapter = SearchSubjectAdapter(
             onSubjectSelected = { subject, isChecked ->
-                Log.d("Search Subject Adapter.setupAdapter()","Subject: ${subject.displayName}        isChecked: ${isChecked}")
                 if (isChecked) {
                     selectedSubjects.add(subject)
                     periodsLeft -= subject.periodCount
@@ -161,7 +160,16 @@ class SearchSubjectsFragment : Fragment() {
 
         binding.rvSubjects.adapter = adapter
         binding.rvSubjects.layoutManager = LinearLayoutManager(requireContext())
+
+        // 👇 Observe and update list
+        searchViewModel.subjects.observe(viewLifecycleOwner) { subjects ->
+            adapter.submitList(subjects.toList()) {
+                adapter.setPeriodsLeft(periodsLeft)
+                adapter.setSelectedSubjectIds(assignedSubjectIdsSet)
+            }
+        }
     }
+
 
     private fun setupListeners() {
         binding.btnCancel.setOnClickListener {
@@ -175,6 +183,7 @@ class SearchSubjectsFragment : Fragment() {
             }
 
             if (isTeacherMode) {
+                Log.d("Set up Listeners", selectedSubjects.toString())
                 val subjectIds = ArrayList(selectedSubjects.map { it.id })
                 val resultIntent = Intent().apply {
                     putStringArrayListExtra(Constants.RESULT_SELECTED_SUBJECT_IDS, subjectIds)
