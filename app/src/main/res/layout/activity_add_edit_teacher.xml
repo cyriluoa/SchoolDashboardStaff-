@@ -196,32 +196,77 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- Assign Subjects Button -->
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnAssignSubjects1"
+
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:background="@drawable/red_button_background"
-                        android:elevation="2dp"
-                        android:text="@string/assign_subjec"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"> <!-- This aligns children vertically -->
+
+                        <ImageButton
+                            android:id="@+id/btnAssignSubjects"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_add_subject"
+                            android:contentDescription="@string/assign_subjects"
+                            app:tint="@color/primary_red" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/assign_subject"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/primary_red" /> <!-- This line underlines the text -->
+
+                    </LinearLayout>
+
+
+
 
 
 
                 </LinearLayout>
 
-                <!-- Submit Button -->
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnSubmitTeacher"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/red_button_background"
-                    android:text="@string/create"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- Cancel Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCancel"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:text="Cancel"
+                        android:textColor="@color/primary_red"
+                        app:strokeColor="@color/primary_red"
+                        app:strokeWidth="2dp"
+                        app:iconTint="@color/primary_red" />
+
+                    <!-- Submit Button -->
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnSubmitTeacher"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/red_button_background"
+                        android:elevation="4dp"
+                        android:text="@string/create_subject"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:drawableTint="@color/white"
+                        android:drawablePadding="8dp"
+                        android:gravity="center" />
+                </LinearLayout>
 
                 <ProgressBar
                     android:id="@+id/progressBar"

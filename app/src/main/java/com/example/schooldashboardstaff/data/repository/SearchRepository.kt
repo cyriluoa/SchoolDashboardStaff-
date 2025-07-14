@@ -18,6 +18,20 @@ class SearchRepository @Inject constructor(
     }
 
 
+    suspend fun getUnassignedSubjectsForTeacher(
+        schoolId: String,
+        assignedSubjectIds: Set<String>
+    ): List<Subject> {
+        return searchManager.getUnassignedSubjectsForTeacher(
+            schoolId = schoolId,
+            assignedSubjectIds = assignedSubjectIds
+        )
+    }
+
+    suspend fun getAllSubjects(schoolId: String): List<Subject> {
+        return searchManager.getAllSubjects(schoolId)
+    }
+
     // You can later add:
     // suspend fun getClassesForGrade(...)
     // suspend fun getTeachersForSubject(...)

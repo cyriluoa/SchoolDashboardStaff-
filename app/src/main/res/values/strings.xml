@@ -66,5 +66,7 @@
     <string name="create_subject">Create Subject</string>
     <string name="assign_subjec">Assign Subjects</string>
     <string name="max_periods">Max Periods</string>
+    <string name="assign_subject">Assign Subject</string>
+    <string name="assign_subjects">Assign Subjects</string>
 
 </resources>

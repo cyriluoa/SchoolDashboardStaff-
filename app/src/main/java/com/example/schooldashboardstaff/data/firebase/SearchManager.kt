@@ -21,4 +21,35 @@ class SearchManager @Inject constructor(): FirestoreManager() {
             emptyList() // or logError(e), depending on your FirestoreManager
         }
     }
+
+    suspend fun getUnassignedSubjectsForTeacher(
+        schoolId: String,
+        assignedSubjectIds: Set<String>
+    ): List<Subject> {
+        return try {
+            val allSubjects = db.collection("schools")
+                .document(schoolId)
+                .collection("subjects")
+                .get()
+                .await()
+                .toObjects(Subject::class.java)
+
+            allSubjects.filterNot { assignedSubjectIds.contains(it.id) }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    suspend fun getAllSubjects(schoolId: String): List<Subject> {
+        return try {
+            db.collection("schools")
+                .document(schoolId)
+                .collection("subjects")
+                .get()
+                .await()
+                .toObjects(Subject::class.java)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
 }

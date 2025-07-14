@@ -48,7 +48,6 @@ class SearchSubjectAdapter(
             // Disable if not enough periods
             binding.cbSelectSubject.isEnabled = isSelected || subject.periodCount <= periodsLeft
 
-            binding.cbSelectSubject.setOnCheckedChangeListener(null) // Avoid infinite loops
 
             binding.cbSelectSubject.setOnCheckedChangeListener(null)
 

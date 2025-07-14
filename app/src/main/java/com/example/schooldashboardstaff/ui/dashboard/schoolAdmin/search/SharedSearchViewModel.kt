@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.schooldashboardstaff.data.model.Subject
+import com.example.schooldashboardstaff.data.model.User
 import com.example.schooldashboardstaff.data.repository.SearchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -27,17 +28,22 @@ class SharedSearchViewModel @Inject constructor(
 
     private var currentSchoolId: String? = null
     private var currentGrade: Int? = null
-
     private var assignedSubjectIds: Set<String> = emptySet()
 
-
-
-
-    fun initSearch(schoolId: String, grade: Int, assignedIds: Set<String>) {
+    // 🔴 CLASS-BASED SUBJECT SEARCH
+    fun initSearchSubjectsForClass(schoolId: String, grade: Int, assignedIds: Set<String>) {
         currentSchoolId = schoolId
         currentGrade = grade
         assignedSubjectIds = assignedIds
-        fetchSubjects() // initial load
+        fetchSubjects()
+    }
+
+    // 🔵 TEACHER-BASED SUBJECT SEARCH (creation or edit)
+    fun initSearchSubjectsForTeacher(schoolId: String, user: User?) {
+        currentSchoolId = schoolId
+        currentGrade = null // teacher mode
+        assignedSubjectIds = user?.subjectIds?.toSet() ?: emptySet()
+        fetchSubjects()
     }
 
     fun updateQuery(query: String) {
@@ -47,22 +53,37 @@ class SharedSearchViewModel @Inject constructor(
 
     private fun fetchSubjects() {
         val schoolId = currentSchoolId ?: return
-        val grade = currentGrade ?: return
         val queryText = _query.value ?: ""
 
         viewModelScope.launch {
             _loading.value = true
             try {
-                val unassignedSubjects = searchRepository.getUnassignedSubjectsForGrade(
-                    schoolId = schoolId,
-                    grade = grade,
-                    assignedSubjectIds = assignedSubjectIds
-                )
+                val subjectsList = when {
+                    currentGrade != null -> {
+                        // CLASS MODE
+                        searchRepository.getUnassignedSubjectsForGrade(
+                            schoolId = schoolId,
+                            grade = currentGrade!!,
+                            assignedSubjectIds = assignedSubjectIds
+                        )
+                    }
+                    assignedSubjectIds.isEmpty() -> {
+                        // TEACHER CREATION (no subject assigned yet)
+                        searchRepository.getAllSubjects(schoolId)
+                    }
+                    else -> {
+                        // TEACHER EDIT MODE
+                        searchRepository.getUnassignedSubjectsForTeacher(
+                            schoolId = schoolId,
+                            assignedSubjectIds = assignedSubjectIds
+                        )
+                    }
+                }
 
                 _subjects.value = if (queryText.isBlank()) {
-                    unassignedSubjects
+                    subjectsList
                 } else {
-                    unassignedSubjects.filter {
+                    subjectsList.filter {
                         it.name.contains(queryText, ignoreCase = true)
                     }
                 }
@@ -74,6 +95,6 @@ class SharedSearchViewModel @Inject constructor(
             }
         }
     }
-
 }
+
 
