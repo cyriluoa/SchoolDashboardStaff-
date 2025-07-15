@@ -25,7 +25,7 @@ class TeachersFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val sharedViewModel: SharedSchoolViewModel by activityViewModels()
-//    private val teachersViewModel: TeachersViewModel by viewModels()
+    private val teachersViewModel: TeachersViewModel by viewModels()
 
     private lateinit var adapter: TeacherAdapter
 
@@ -41,7 +41,7 @@ class TeachersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-//        setupObservers()
+        setupObservers()
         setupFab()
     }
 
@@ -51,24 +51,25 @@ class TeachersFragment : Fragment() {
         binding.rvTeachers.adapter = adapter
     }
 
-//    private fun setupObservers() {
-//        sharedViewModel.school.observe(viewLifecycleOwner) { school ->
-//            school?.let {
-//                teachersViewModel.startListeningToTeachers(it.id)
-//            }
-//        }
-//
-//        teachersViewModel.teachers.observe(viewLifecycleOwner) { teachers ->
-//            adapter.submitList(teachers)
-//        }
-//
-//        teachersViewModel.errorMessage.observe(viewLifecycleOwner) { error ->
-//            error?.let {
-//                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-//                teachersViewModel.clearError()
-//            }
-//        }
-//    }
+    private fun setupObservers() {
+        sharedViewModel.school.observe(viewLifecycleOwner) { school ->
+            school?.let {
+                teachersViewModel.startListeningToTeachers(it.id)
+            }
+        }
+
+        teachersViewModel.teachers.observe(viewLifecycleOwner) { teachers ->
+            adapter.submitList(teachers)
+        }
+
+        teachersViewModel.errorMessage.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                teachersViewModel.clearError()
+            }
+        }
+    }
+
 
     private fun setupFab() {
         binding.fabAddTeacher.setOnClickListener {

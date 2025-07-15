@@ -8,6 +8,9 @@ import android.util.Log
 import com.example.schooldashboardstaff.data.model.User
 import com.example.schooldashboardstaff.data.model.UserRole
 import com.example.schooldashboardstaff.data.repository.AuthRepository
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.MetadataChanges
+import com.google.firebase.firestore.Source
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -88,4 +91,41 @@ class TeacherManager @Inject constructor(
             }
         )
     }
+
+    fun listenToTeachers(
+        schoolId: String,
+        onUpdate: (List<User>) -> Unit,
+        onError: (String) -> Unit
+    ): ListenerRegistration {
+        return db.collection("users")
+            .whereEqualTo("schoolId", schoolId)
+            .whereEqualTo("role", UserRole.TEACHER.name)
+            .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, error ->
+
+                if (error != null) {
+                    onError(error.message ?: "Unknown error occurred")
+                    return@addSnapshotListener
+                }
+
+                if (snapshot == null) {
+                    onUpdate(emptyList())
+                    return@addSnapshotListener
+                }
+
+                // Ensure we're only acting on server-fresh data
+                if (snapshot.metadata.isFromCache) {
+                    Log.d("TeacherDebug", "Ignored cached snapshot")
+                    return@addSnapshotListener
+                }
+
+                snapshot.documents.forEach { doc ->
+                    Log.d("DeserializationDebug", "Document ID: ${doc.id}, Data: ${doc.data}")
+                }
+
+                val teachers = snapshot.toObjects(User::class.java)
+                onUpdate(teachers)
+            }
+    }
+
+
 }

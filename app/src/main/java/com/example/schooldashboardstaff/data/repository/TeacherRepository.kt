@@ -4,6 +4,7 @@ package com.example.schooldashboardstaff.data.repository
 import com.example.schooldashboardstaff.data.firebase.AuthManager
 import com.example.schooldashboardstaff.data.firebase.TeacherManager
 import com.example.schooldashboardstaff.data.model.User
+import com.google.firebase.firestore.ListenerRegistration
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -36,4 +37,13 @@ class TeacherRepository @Inject constructor(
             onFailure = onFailure
         )
     }
+
+    fun listenToTeachers(
+        schoolId: String,
+        onUpdate: (List<User>) -> Unit,
+        onError: (String) -> Unit
+    ): ListenerRegistration {
+        return teacherManager.listenToTeachers(schoolId, onUpdate, onError)
+    }
+
 }
