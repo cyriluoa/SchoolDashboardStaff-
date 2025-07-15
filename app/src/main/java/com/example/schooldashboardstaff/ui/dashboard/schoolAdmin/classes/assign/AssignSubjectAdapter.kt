@@ -32,36 +32,9 @@ class AssignSubjectAdapter(
 
             // Update button style
             if (isAssigned) {
-                binding.btnAssignTeacher.text = "Unassign"
-                binding.btnAssignTeacher.setBackgroundResource(R.drawable.green_button_background)
-                binding.ivClassIcon.setColorFilter(
-                    ContextCompat.getColor(binding.root.context, R.color.green),
-                    PorterDuff.Mode.SRC_IN
-                )
-
-                binding.ivTeacherIcon.setColorFilter(
-                    ContextCompat.getColor(binding.root.context, R.color.green),
-                    PorterDuff.Mode.SRC_IN
-                )
-                binding.tvSubjectName.setTextColor(
-                    ContextCompat.getColor(binding.root.context, R.color.green)
-                )
-
+                applyUiState("Unassign", R.color.green)
             } else {
-                binding.btnAssignTeacher.text = "Assign"
-                binding.btnAssignTeacher.setBackgroundResource(R.drawable.red_button_background)
-                binding.ivClassIcon.setColorFilter(
-                    ContextCompat.getColor(binding.root.context, R.color.primary_red),
-                    PorterDuff.Mode.SRC_IN
-                )
-
-                binding.ivTeacherIcon.setColorFilter(
-                    ContextCompat.getColor(binding.root.context, R.color.primary_red),
-                    PorterDuff.Mode.SRC_IN
-                )
-                binding.tvSubjectName.setTextColor(
-                    ContextCompat.getColor(binding.root.context, R.color.primary_red)
-                )
+                applyUiState("Assign", R.color.primary_red)
             }
 
             // Labels
@@ -73,6 +46,23 @@ class AssignSubjectAdapter(
             binding.btnAssignTeacher.setOnClickListener {
                 onAssignClick(subject)
             }
+        }
+
+        private fun applyUiState(buttonText: String, color: Int){
+            binding.btnAssignTeacher.text = buttonText
+            binding.btnAssignTeacher.setBackgroundResource(R.drawable.green_button_background)
+            binding.ivClassIcon.setColorFilter(
+                ContextCompat.getColor(binding.root.context, color),
+                PorterDuff.Mode.SRC_IN
+            )
+
+            binding.ivTeacherIcon.setColorFilter(
+                ContextCompat.getColor(binding.root.context, color),
+                PorterDuff.Mode.SRC_IN
+            )
+            binding.tvSubjectName.setTextColor(
+                ContextCompat.getColor(binding.root.context, color)
+            )
         }
 
     }
