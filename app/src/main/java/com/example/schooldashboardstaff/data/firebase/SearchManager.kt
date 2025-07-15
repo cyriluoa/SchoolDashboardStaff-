@@ -2,7 +2,9 @@ package com.example.schooldashboardstaff.data.firebase
 
 
 
+import android.provider.SyncStateContract
 import com.example.schooldashboardstaff.data.model.Subject
+import com.example.schooldashboardstaff.utils.Constants
 import jakarta.inject.Inject
 import kotlinx.coroutines.tasks.await
 
@@ -27,9 +29,10 @@ class SearchManager @Inject constructor(): FirestoreManager() {
         assignedSubjectIds: Set<String>
     ): List<Subject> {
         return try {
-            val allSubjects = db.collection("schools")
+            val allSubjects = db.collection(Constants.SCHOOLS_COLLECTION)
                 .document(schoolId)
-                .collection("subjects")
+                .collection(Constants.SUBJECTS_COLLECTION)
+                .orderBy(Constants.SCHOOL_CLASSES_FIELD_GRADE)
                 .get()
                 .await()
                 .toObjects(Subject::class.java)
@@ -42,9 +45,10 @@ class SearchManager @Inject constructor(): FirestoreManager() {
 
     suspend fun getAllSubjects(schoolId: String): List<Subject> {
         return try {
-            db.collection("schools")
+            db.collection(Constants.SCHOOLS_COLLECTION)
                 .document(schoolId)
-                .collection("subjects")
+                .collection(Constants.SUBJECTS_COLLECTION)
+                .orderBy(Constants.SCHOOL_CLASSES_FIELD_GRADE)
                 .get()
                 .await()
                 .toObjects(Subject::class.java)
