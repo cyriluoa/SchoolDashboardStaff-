@@ -42,7 +42,7 @@ class SharedSearchViewModel @Inject constructor(
     fun initSearchSubjectsForTeacher(schoolId: String, user: User?) {
         currentSchoolId = schoolId
         currentGrade = null // teacher mode
-        assignedSubjectIds = user?.subjectIds?.toSet() ?: emptySet()
+        assignedSubjectIds = user?.subjectToClassMap?.keys?.toSet() ?: emptySet()
         fetchSubjects()
     }
 

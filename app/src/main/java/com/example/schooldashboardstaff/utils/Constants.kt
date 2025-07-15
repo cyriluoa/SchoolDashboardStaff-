@@ -59,6 +59,10 @@ object Constants {
     const val SEARCH_SUBJECTS_FOR_TEACHER = "SEARCH_SUBJECTS_FOR_TEACHER"
     const val RESULT_SELECTED_SUBJECT_IDS = "result_selected_subject_ids"
 
+    const val RESULT_SUBJECT_TO_CLASS_MAP = "result_subject_to_class_map"
+    const val RESULT_TOTAL_ASSIGNED_PERIODS = "result_total_assigned_periods"
+
+
 
 
     const val SEARCH_TEACHERS = "SEARCH_TEACHERS"

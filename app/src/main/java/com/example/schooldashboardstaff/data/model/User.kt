@@ -15,7 +15,7 @@ data class User(
     val schoolId: String = "",
     val createdBy: String = "",
     val classIds: List<String>? = null,         //Only for teachers and students
-    val subjectIds: List<String>? = null,        //Only for teachers and students
+    val subjectToClassMap: Map<String, String>? = null, // subjectId → classId
     // For teachers only
     val isClassTeacher: Boolean? = null,
     val maxPeriods: Int? = null,

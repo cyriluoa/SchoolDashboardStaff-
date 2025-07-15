@@ -94,7 +94,7 @@ class SearchSubjectsFragment : Fragment() {
 
         if (isTeacherMode) {
             user = arguments?.getParcelable(Constants.USER_OBJECT_INTENT_KEY)
-            assignedSubjectIdsSet = user?.subjectIds?.toSet() ?: emptySet()
+            assignedSubjectIdsSet = user?.subjectToClassMap?.keys?.toSet() ?: emptySet()
             searchViewModel.initSearchSubjectsForTeacher(schoolId, user)
         } else {
             classId = arguments?.getString(Constants.CLASS_ID_KEY)
@@ -184,10 +184,14 @@ class SearchSubjectsFragment : Fragment() {
 
             if (isTeacherMode) {
                 Log.d("Set up Listeners", selectedSubjects.toString())
-                val subjectIds = ArrayList(selectedSubjects.map { it.id })
+                val subjectToClassMap = selectedSubjects.associate { it.id to "" } // classId will be set later
+                val assignedPeriods = selectedSubjects.sumOf { it.periodCount }
+
                 val resultIntent = Intent().apply {
-                    putStringArrayListExtra(Constants.RESULT_SELECTED_SUBJECT_IDS, subjectIds)
+                    putExtra(Constants.RESULT_SUBJECT_TO_CLASS_MAP, HashMap(subjectToClassMap))
+                    putExtra(Constants.RESULT_TOTAL_ASSIGNED_PERIODS, assignedPeriods)
                 }
+
                 requireActivity().setResult(AppCompatActivity.RESULT_OK, resultIntent)
                 requireActivity().finish()
             } else {
