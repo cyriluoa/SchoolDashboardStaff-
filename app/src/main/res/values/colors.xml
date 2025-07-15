@@ -28,5 +28,6 @@
     <color name="yellow">#DEEDD096</color>
     <color name="blue">#2196F3</color>
     <color name="darker_blue">#062BA4</color>
+    <color name="teal_700">#00796B</color>
 
 </resources>

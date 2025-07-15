@@ -8,6 +8,8 @@ import android.util.Log
 import com.example.schooldashboardstaff.data.model.User
 import com.example.schooldashboardstaff.data.model.UserRole
 import com.example.schooldashboardstaff.data.repository.AuthRepository
+import com.example.schooldashboardstaff.utils.Constants
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.MetadataChanges
 import com.google.firebase.firestore.Source
@@ -76,6 +78,30 @@ class TeacherManager @Inject constructor(
             }
         )
     }
+
+    fun assignTeacherToSubjects(
+        teacherId: String,
+        schoolId: String,
+        subjectIds: Set<String>,
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        val batch = db.batch()
+
+        subjectIds.forEach { subjectId ->
+            val subjectRef = db.collection(Constants.SCHOOLS_COLLECTION)
+                .document(schoolId)
+                .collection(Constants.SUBJECTS_COLLECTION)
+                .document(subjectId)
+
+            batch.update(subjectRef, "teacherIds", FieldValue.arrayUnion(teacherId))
+        }
+
+        batch.commit()
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { onFailure(it) }
+    }
+
 
     private fun rollbackTeacherCreation(user: User, cause: Exception, onFailure: (Exception) -> Unit) {
         authRepository.deleteUserCompletely(

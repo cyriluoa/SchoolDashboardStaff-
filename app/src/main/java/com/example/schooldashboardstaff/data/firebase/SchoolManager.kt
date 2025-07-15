@@ -154,7 +154,7 @@ class SchoolManager @Inject constructor(): FirestoreManager(){
 
 
 
-
+// this is for something
 //    fun getAllSchools(
 //        onSuccess: (List<School>) -> Unit,
 //        onFailure: (Exception) -> Unit

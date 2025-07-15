@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.schooldashboardstaff.databinding.ItemSchoolClassBinding
 import com.example.schooldashboardstaff.data.model.SchoolClass
 import com.example.schooldashboardstaff.data.model.SchoolClassState
+import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes.assign.AssignTeachersDialogFragment
 import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.search.SearchActivity
 
 class SchoolClassAdapter : ListAdapter<SchoolClass, SchoolClassAdapter.ClassViewHolder>(DiffCallback()) {
@@ -55,6 +57,15 @@ class SchoolClassAdapter : ListAdapter<SchoolClass, SchoolClassAdapter.ClassView
                 context.startActivity(intent)
             }
 
+            binding.btnAssignTeachers.setOnClickListener {
+                val context = binding.root.context
+                val fragmentManager = (context as AppCompatActivity).supportFragmentManager
+
+                val dialog = AssignTeachersDialogFragment.newInstance(schoolClass)
+                dialog.show(fragmentManager, "AssignTeachersDialog")
+            }
+
+
         }
 
         private fun applyStateUi(state: SchoolClassState, binding: ItemSchoolClassBinding) {
@@ -87,26 +98,33 @@ class SchoolClassAdapter : ListAdapter<SchoolClass, SchoolClassAdapter.ClassView
             // Apply visibility logic based on state
             when (state) {
                 SchoolClassState.UNSTABLE_SUBJECTS_NOT_ASSIGNED -> {
-                    // Show last 3 buttons: assignSubjects, edit, delete
+                    // Show: Assign Subjects, Edit, Delete
+                    listOf(binding.btnAssignSubjects, binding.btnEdit, binding.btnDelete).forEach {
+                        it.visibility = View.VISIBLE
+                    }
+                }
+                SchoolClassState.UNSTABLE_SUBJECTS_ASSIGNED -> {
+                    // Show: Assign Subjects, Edit, Delete
                     listOf(binding.btnAssignSubjects, binding.btnEdit, binding.btnDelete).forEach {
                         it.visibility = View.VISIBLE
                     }
                 }
                 SchoolClassState.UNSTABLE_NO_PERIODS_LEFT -> {
-                    // Show 4th last button + last 2 (assignSubjects, edit, delete)
+                    // Show: Assign Teachers, Edit, Delete
+                    listOf(binding.btnAssignTeachers, binding.btnEdit, binding.btnDelete).forEach {
+                        it.visibility = View.VISIBLE
+                    }
+                }
+
+                SchoolClassState.UNSTABLE_TEACHERS_ASSIGNED -> {
+                    // Show: Assign Class Teacher, Edit, Delete
                     listOf(binding.btnAssignClassTeacher, binding.btnEdit, binding.btnDelete).forEach {
                         it.visibility = View.VISIBLE
                     }
                 }
                 SchoolClassState.UNSTABLE_CLASS_TEACHER_ASSIGNED -> {
-                    // Show 5th last + last 2
-                    listOf(binding.btnAssignTeachers, binding.btnEdit, binding.btnDelete).forEach {
-                        it.visibility = View.VISIBLE
-                    }
-                }
-                SchoolClassState.UNSTABLE_SUBJECTS_ASSIGNED -> {
-                    // Same as SUBJECTS_NOT_ASSIGNED
-                    listOf(binding.btnAssignSubjects, binding.btnEdit, binding.btnDelete).forEach {
+                    // Show: Assign Teachers, Edit, Delete
+                    listOf(binding.btnAssignStudents, binding.btnEdit, binding.btnDelete).forEach {
                         it.visibility = View.VISIBLE
                     }
                 }
@@ -116,6 +134,7 @@ class SchoolClassAdapter : ListAdapter<SchoolClass, SchoolClassAdapter.ClassView
                     buttons.forEach { it.visibility = View.VISIBLE }
                 }
             }
+
         }
 
 
