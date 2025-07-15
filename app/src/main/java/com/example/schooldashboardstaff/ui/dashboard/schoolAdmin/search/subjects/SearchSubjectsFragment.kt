@@ -63,13 +63,11 @@ class SearchSubjectsFragment : Fragment() {
 
         fun newInstanceForTeacher(
             schoolId: String,
-            periodsLeft: Int,
             user: User?
         ) = SearchSubjectsFragment().apply {
             arguments = bundleOf(
                 Constants.SEARCH_TYPE_KEY to Constants.SEARCH_SUBJECTS_FOR_TEACHER,
                 Constants.SCHOOL_ID_KEY to schoolId,
-                Constants.MAX_PERIODS_KEY to periodsLeft,
                 Constants.USER_OBJECT_INTENT_KEY to user
             )
         }
@@ -96,6 +94,7 @@ class SearchSubjectsFragment : Fragment() {
             user = arguments?.getParcelable(Constants.USER_OBJECT_INTENT_KEY)
             assignedSubjectIdsSet = user?.subjectToClassMap?.keys?.toSet() ?: emptySet()
             searchViewModel.initSearchSubjectsForTeacher(schoolId, user)
+            binding.tvPeriodsLeft.visibility = View.GONE
         } else {
             classId = arguments?.getString(Constants.CLASS_ID_KEY)
             grade = arguments?.getInt(Constants.GRADE_KEY)
@@ -104,6 +103,7 @@ class SearchSubjectsFragment : Fragment() {
             if (grade != null) {
                 searchViewModel.initSearchSubjectsForClass(schoolId, grade!!, assignedSubjectIdsSet)
             }
+            updatePeriodCounter()
         }
 
         setupAdapter()
@@ -128,35 +128,42 @@ class SearchSubjectsFragment : Fragment() {
             }
         }
 
-        updatePeriodCounter()
     }
 
     private fun setupAdapter() {
         adapter = SearchSubjectAdapter(
+            isTeacherMode = isTeacherMode,
             onSubjectSelected = { subject, isChecked ->
                 if (isChecked) {
                     selectedSubjects.add(subject)
-                    periodsLeft -= subject.periodCount
+                    if (!isTeacherMode) periodsLeft -= subject.periodCount
                 } else {
                     selectedSubjects.remove(subject)
-                    periodsLeft += subject.periodCount
+                    if (!isTeacherMode) periodsLeft += subject.periodCount
                 }
 
-                updatePeriodCounter()
-                adapter.setPeriodsLeft(periodsLeft)
+                if (!isTeacherMode) {
+                    updatePeriodCounter()
+                    adapter.setPeriodsLeft(periodsLeft)
+                }
             },
             canSelect = { subject ->
-                if (periodsLeft >= subject.periodCount) true
-                else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Not enough periods left for ${subject.name}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    false
+                if (isTeacherMode) {
+                    true
+                } else {
+                    if (periodsLeft >= subject.periodCount) true
+                    else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Not enough periods left for ${subject.name}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        false
+                    }
                 }
             }
         )
+
 
         binding.rvSubjects.adapter = adapter
         binding.rvSubjects.layoutManager = LinearLayoutManager(requireContext())
@@ -183,13 +190,10 @@ class SearchSubjectsFragment : Fragment() {
             }
 
             if (isTeacherMode) {
-                Log.d("Set up Listeners", selectedSubjects.toString())
-                val subjectToClassMap = selectedSubjects.associate { it.id to "" } // classId will be set later
-                val assignedPeriods = selectedSubjects.sumOf { it.periodCount }
+                val subjectToClassMap = selectedSubjects.associate { it.id to listOf("") } // classId will be set later
 
                 val resultIntent = Intent().apply {
                     putExtra(Constants.RESULT_SUBJECT_TO_CLASS_MAP, HashMap(subjectToClassMap))
-                    putExtra(Constants.RESULT_TOTAL_ASSIGNED_PERIODS, assignedPeriods)
                 }
 
                 requireActivity().setResult(AppCompatActivity.RESULT_OK, resultIntent)

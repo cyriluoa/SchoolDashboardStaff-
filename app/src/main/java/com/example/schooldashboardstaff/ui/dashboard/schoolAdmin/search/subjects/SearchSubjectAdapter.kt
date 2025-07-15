@@ -9,6 +9,7 @@ import com.example.schooldashboardstaff.data.model.Subject
 import com.example.schooldashboardstaff.databinding.ItemSubjectSearchBinding
 
 class SearchSubjectAdapter(
+    private val isTeacherMode: Boolean,
     private val onSubjectSelected: (Subject, Boolean) -> Unit,
     private val canSelect: (Subject) -> Boolean
 ) : ListAdapter<Subject, SearchSubjectAdapter.SubjectViewHolder>(DiffCallback()) {
@@ -52,7 +53,7 @@ class SearchSubjectAdapter(
             binding.cbSelectSubject.isChecked = isSelected
 
             // Enable checkbox if enough periods or it's already selected
-            binding.cbSelectSubject.isEnabled = isSelected || subject.periodCount <= periodsLeft
+            binding.cbSelectSubject.isEnabled = isTeacherMode || isSelected || subject.periodCount <= periodsLeft
 
             binding.cbSelectSubject.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {

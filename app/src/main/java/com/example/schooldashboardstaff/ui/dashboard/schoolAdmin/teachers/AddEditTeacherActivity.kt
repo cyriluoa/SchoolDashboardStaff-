@@ -32,8 +32,7 @@ class AddEditTeacherActivity : AppCompatActivity() {
 
     private val viewModel: AddEditTeacherViewModel by viewModels()
 
-    private var selectedSubjectToClassMap: Map<String, String> = emptyMap()
-    private var assignedPeriods: Int = 0
+    private var selectedSubjectToClassMap: Map<String, List<String>> = emptyMap()
 
     private lateinit var subjectPickerLauncher: ActivityResultLauncher<Intent>
 
@@ -52,13 +51,12 @@ class AddEditTeacherActivity : AppCompatActivity() {
         // Register result launcher
         subjectPickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                val subjectMap = result.data?.getSerializableExtra(Constants.RESULT_SUBJECT_TO_CLASS_MAP) as? HashMap<String, String>
-                val assigned = result.data?.getIntExtra(Constants.RESULT_TOTAL_ASSIGNED_PERIODS, 0) ?: 0
+                val subjectMap = result.data?.getSerializableExtra(Constants.RESULT_SUBJECT_TO_CLASS_MAP) as? HashMap<*, *>
 
-                selectedSubjectToClassMap = subjectMap ?: emptyMap()
-                assignedPeriods = assigned
+                selectedSubjectToClassMap = subjectMap as Map<String, List<String>>
 
-                Toast.makeText(this, "Assigned $assignedPeriods periods across ${selectedSubjectToClassMap.size} subjects", Toast.LENGTH_SHORT).show()
+
+                Toast.makeText(this, "Assigned  ${selectedSubjectToClassMap.size} subjects", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -69,18 +67,9 @@ class AddEditTeacherActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         binding.btnAssignSubjects.setOnClickListener {
-            val maxPeriodsText = binding.etTeacherMaxPeriods1.text.toString().trim()
-            val maxPeriods = maxPeriodsText.toIntOrNull()
-
-            if (maxPeriods == null || maxPeriods <= 0) {
-                Toast.makeText(this, "Please enter a valid max periods value before assigning subjects", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
             val intent = SearchActivity.createIntentForTeacher(
                 context = this,
                 schoolId = school.id,
-                periodsLeft = maxPeriods,
                 user = null
             )
             subjectPickerLauncher.launch(intent)
@@ -115,7 +104,7 @@ class AddEditTeacherActivity : AppCompatActivity() {
                 subjectToClassMap = selectedSubjectToClassMap,
                 isClassTeacher = false,
                 maxPeriods = maxPeriods,
-                assignedPeriods = assignedPeriods
+                assignedPeriods = 0
             )
 
             viewModel.createTeacherUser(email, password, teacherToCreate)

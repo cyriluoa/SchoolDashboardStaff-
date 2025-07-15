@@ -42,13 +42,11 @@ class SearchActivity : AppCompatActivity() {
         fun createIntentForTeacher(
             context: Context,
             schoolId: String,
-            periodsLeft: Int,
             user: User? = null
         ): Intent {
             return Intent(context, SearchActivity::class.java).apply {
                 putExtra(Constants.SEARCH_TYPE_KEY, Constants.SEARCH_SUBJECTS_FOR_TEACHER)
                 putExtra(Constants.SCHOOL_ID_KEY, schoolId)
-                putExtra(Constants.PERIODS_LEFT_KEY, periodsLeft)
                 putExtra(Constants.USER_OBJECT_INTENT_KEY, user)
             }
         }
@@ -123,7 +121,6 @@ class SearchActivity : AppCompatActivity() {
             Constants.SEARCH_SUBJECTS_FOR_TEACHER -> {
                 SearchSubjectsFragment.newInstanceForTeacher(
                     schoolId = params.schoolId,
-                    periodsLeft = params.periodsLeft,
                     user = params.user
                 )
             }
