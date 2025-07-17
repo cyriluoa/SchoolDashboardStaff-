@@ -3,8 +3,12 @@ package com.example.schooldashboardstaff.data.firebase
 
 
 import android.provider.SyncStateContract
+import android.util.Log
 import com.example.schooldashboardstaff.data.model.Subject
+import com.example.schooldashboardstaff.data.model.User
+import com.example.schooldashboardstaff.data.model.UserRole
 import com.example.schooldashboardstaff.utils.Constants
+import com.google.firebase.firestore.FieldPath
 import jakarta.inject.Inject
 import kotlinx.coroutines.tasks.await
 
@@ -12,10 +16,10 @@ class SearchManager @Inject constructor(): FirestoreManager() {
 
     suspend fun getSubjectsForGrade(schoolId: String, grade: Int): List<Subject> {
         return try {
-            db.collection("schools")
+            db.collection(Constants.SCHOOLS_COLLECTION)
                 .document(schoolId)
-                .collection("subjects")
-                .whereEqualTo("grade", grade)
+                .collection(Constants.SUBJECTS_COLLECTION)
+                .whereEqualTo(Constants.SCHOOL_CLASSES_FIELD_GRADE, grade)
                 .get()
                 .await()
                 .toObjects(Subject::class.java)
@@ -56,4 +60,23 @@ class SearchManager @Inject constructor(): FirestoreManager() {
             emptyList()
         }
     }
+
+    suspend fun getTeachersByIds(schoolId: String, ids: List<String>): List<User> {
+        if (ids.isEmpty()) return emptyList()
+
+        return try {
+            db.collection(Constants.USERS_COLLECTION)
+                .whereEqualTo(Constants.USERS_FIELD_SCHOOL_ID, schoolId)
+                .whereEqualTo(Constants.USERS_FIELD_ROLE, UserRole.TEACHER.name)
+                .whereIn(FieldPath.documentId(), ids)
+                .get()
+                .await()
+                .documents
+                .mapNotNull { it.toObject(User::class.java) }
+        } catch (e: Exception) {
+            Log.e("SearchManager", "Error fetching teachers by IDs", e)
+            emptyList()
+        }
+    }
+
 }

@@ -33,20 +33,7 @@ class TeacherRepository @Inject constructor(
             email = email,
             password = password,
             user = userWithCreatedBy,
-            onSuccess = {
-                // Now assign the teacher to each selected subject
-                teacherManager.assignTeacherToSubjects(
-                    teacherId = userWithCreatedBy.uid,
-                    schoolId = userWithCreatedBy.schoolId,
-                    subjectIds = userWithCreatedBy.subjectToClassMap?.keys ?: emptySet(),
-                    onSuccess = {
-                        onSuccess()
-                    },
-                    onFailure = { subjectAssignError ->
-                        onFailure(subjectAssignError)
-                    }
-                )
-            },
+            onSuccess = onSuccess,
             onFailure = onFailure
         )
     }

@@ -7,5 +7,8 @@ data class SearchParams(
     val grade: Int,
     val periodsLeft: Int,
     val subjectKeys: Array<String>?,
-    val user: User?
+    val user: User?,
+    val subject: Subject? = null,
+    val schoolClass: SchoolClass? = null
+
 )

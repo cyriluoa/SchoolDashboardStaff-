@@ -3,6 +3,7 @@ package com.example.schooldashboardstaff.data.repository
 
 import com.example.schooldashboardstaff.data.firebase.SearchManager
 import com.example.schooldashboardstaff.data.model.Subject
+import com.example.schooldashboardstaff.data.model.User
 import javax.inject.Inject
 
 class SearchRepository @Inject constructor(
@@ -31,6 +32,14 @@ class SearchRepository @Inject constructor(
     suspend fun getAllSubjects(schoolId: String): List<Subject> {
         return searchManager.getAllSubjects(schoolId)
     }
+
+    suspend fun getTeachersForASubject(schoolId: String, subject: Subject): List<User> {
+        return searchManager.getTeachersByIds(
+            schoolId = schoolId,
+            ids = subject.teacherIds
+        )
+    }
+
 
     // You can later add:
     // suspend fun getClassesForGrade(...)

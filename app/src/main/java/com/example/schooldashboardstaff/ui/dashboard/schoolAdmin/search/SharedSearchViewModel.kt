@@ -11,6 +11,7 @@ import com.example.schooldashboardstaff.data.repository.SearchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
+import kotlin.collections.filter
 
 @HiltViewModel
 class SharedSearchViewModel @Inject constructor(
@@ -20,15 +21,23 @@ class SharedSearchViewModel @Inject constructor(
     private val _subjects = MutableLiveData<List<Subject>>()
     val subjects: LiveData<List<Subject>> get() = _subjects
 
+    private val _searchResults = MutableLiveData<List<User>>()
+    val searchResults: LiveData<List<User>> get() = _searchResults
+
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> get() = _loading
 
     private val _query = MutableLiveData<String>("")
     val query: LiveData<String> get() = _query
 
+
+
     private var currentSchoolId: String? = null
     private var currentGrade: Int? = null
     private var assignedSubjectIds: Set<String> = emptySet()
+
+    private var currentSubject: Subject? = null
+
 
     // 🔴 CLASS-BASED SUBJECT SEARCH
     fun initSearchSubjectsForClass(schoolId: String, grade: Int, assignedIds: Set<String>) {
@@ -45,6 +54,14 @@ class SharedSearchViewModel @Inject constructor(
         assignedSubjectIds = user?.subjectToClassMap?.keys?.toSet() ?: emptySet()
         fetchSubjects()
     }
+
+    // 🟢 INIT TEACHER SEARCH FOR ASSIGN
+    fun initSearchTeachersForAssign(schoolId: String, subject: Subject) {
+        currentSchoolId = schoolId
+        currentSubject = subject
+        searchTeachersToAssign(schoolId, subject)
+    }
+
 
     fun updateQuery(query: String) {
         _query.value = query
@@ -90,6 +107,27 @@ class SharedSearchViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.e("SharedSearchVM", "Error fetching subjects", e)
                 _subjects.value = emptyList()
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    private fun searchTeachersToAssign(schoolId: String, subject: Subject) {
+        viewModelScope.launch {
+            _loading.value = true
+            try {
+                val teacherList = searchRepository.getTeachersForASubject(schoolId, subject)
+
+                val filtered = teacherList.filter { teacher: User ->
+                    val periodsLeft = (teacher.maxPeriods ?: 0) - (teacher.assignedPeriods ?: 0)
+                    periodsLeft >= subject.periodCount
+                }
+
+                _searchResults.value = filtered
+            } catch (e: Exception) {
+                Log.e("SharedSearchVM", "Error fetching teachers", e)
+                _searchResults.value = emptyList()
             } finally {
                 _loading.value = false
             }

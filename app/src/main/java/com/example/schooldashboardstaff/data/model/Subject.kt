@@ -1,9 +1,11 @@
 package com.example.schooldashboardstaff.data.model
 
 import android.graphics.Color
+import android.os.Parcelable
 import androidx.annotation.ColorInt
+import kotlinx.parcelize.Parcelize
 
-
+@Parcelize
 data class Subject(
     val id: String = "",
     val name: String = "",
@@ -14,4 +16,4 @@ data class Subject(
     val periodCount: Int = 0,
     @ColorInt
     val colorInt: Int = Color.RED
-)
+) : Parcelable

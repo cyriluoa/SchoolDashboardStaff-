@@ -58,7 +58,16 @@ class TeacherManager @Inject constructor(
                             email = teacherUser.email,
                             onSuccess = {
                                 Log.d(TAG, "Username mapping created for ${teacherUser.username}")
-                                onSuccess()
+
+                                // ✅ Assign subjects here
+                                val subjectIds = teacherUser.subjectToClassMap?.keys ?: emptySet()
+                                assignTeacherToSubjects(
+                                    teacherId = uid,
+                                    schoolId = teacherUser.schoolId,
+                                    subjectIds = subjectIds,
+                                    onSuccess = onSuccess,
+                                    onFailure = onFailure
+                                )
                             },
                             onFailure = { mappingError ->
                                 Log.e(TAG, "Failed to add username mapping", mappingError)
@@ -68,7 +77,7 @@ class TeacherManager @Inject constructor(
                     },
                     onFailure = { firestoreError ->
                         Log.e(TAG, "Failed to create teacher document", firestoreError)
-                        rollbackTeacherCreation(user.copy(uid = uid), firestoreError, onFailure)
+                        rollbackTeacherCreation(teacherUser, firestoreError, onFailure)
                     }
                 )
             },
@@ -93,6 +102,7 @@ class TeacherManager @Inject constructor(
                 .document(schoolId)
                 .collection(Constants.SUBJECTS_COLLECTION)
                 .document(subjectId)
+            Log.d("assignTeacherToSubjects", "SubjectId: $subjectId     TeacherId: $teacherId")
 
             batch.update(subjectRef, "teacherIds", FieldValue.arrayUnion(teacherId))
         }
@@ -101,6 +111,8 @@ class TeacherManager @Inject constructor(
             .addOnSuccessListener { onSuccess() }
             .addOnFailureListener { onFailure(it) }
     }
+
+
 
 
     private fun rollbackTeacherCreation(user: User, cause: Exception, onFailure: (Exception) -> Unit) {

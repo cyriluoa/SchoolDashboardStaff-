@@ -17,6 +17,7 @@ import com.example.schooldashboardstaff.databinding.DialogAssignTeachersToSubjec
 import com.example.schooldashboardstaff.data.model.SchoolClass
 
 import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.SharedSchoolViewModel
+import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -63,11 +64,19 @@ class AssignTeachersDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // 1. Setup adapter
-        subjectAdapter = AssignSubjectAdapter(subjectAssignments = schoolClass.subjectAssignments,
+        subjectAdapter = AssignSubjectAdapter(
+            subjectAssignments = schoolClass.subjectAssignments,
             onAssignClick = { subject ->
-            // 🔜 Will launch teacher picker later
-            Log.d("AssignClick", "Clicked Assign for: ${subject.displayName}")
-        })
+                val intent = SearchActivity.createIntentForAssignTeacher(
+                    requireContext(),
+                    schoolId = schoolClass.schoolId,
+                    subject = subject,
+                    schoolClass = schoolClass
+                )
+                startActivity(intent)
+            }
+        )
+
 
         binding.rvSubjects.adapter = subjectAdapter
         binding.rvSubjects.layoutManager = LinearLayoutManager(requireContext())
