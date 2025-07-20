@@ -53,7 +53,7 @@ class AssignSubjectDialogViewModel @Inject constructor(
                     updatedAssignments = updatedAssignments,
                     subjects = subjects
                 )
-                Log.d("AssignSubjectVM", "Teacher assignment successful")
+//                Log.d("AssignSubjectVM", "Teacher assignment successful")
                 _assignmentSuccess.postValue(true)
             } catch (e: Exception) {
                 Log.e("AssignSubjectVM", "Assignment failed", e)

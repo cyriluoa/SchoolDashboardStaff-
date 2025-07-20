@@ -25,7 +25,7 @@ class AssignRepository @Inject constructor(
         subjects: List<Subject>
     ) {
         try {
-            Log.d("AssignManager", "Step 1: Updating users for assignments")
+//            Log.d("AssignManager", "Step 1: Updating users for assignments")
             assignManager.updateUsersForAssignments(
                 schoolId = schoolClass.schoolId,
                 schoolClassId = schoolClass.id,
@@ -33,13 +33,13 @@ class AssignRepository @Inject constructor(
                 subjects = subjects
             )
 
-            Log.d("AssignManager", "Step 2: Updating class assignments")
+//            Log.d("AssignManager", "Step 2: Updating class assignments")
             assignManager.updateClassAssignments(
                 schoolClass = schoolClass,
                 updatedAssignments = updatedAssignments
             )
 
-            Log.d("AssignManager", "✅ Both updates done")
+//            Log.d("AssignManager", "✅ Both updates done")
         } catch (e: Exception) {
             Log.e("AssignManager", "❌ assignTeachersToSubjects failed", e)
             throw e

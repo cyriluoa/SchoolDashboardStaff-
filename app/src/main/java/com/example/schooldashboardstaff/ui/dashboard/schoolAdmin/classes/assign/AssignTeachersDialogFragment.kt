@@ -117,7 +117,7 @@ class AssignTeachersDialogFragment : DialogFragment() {
         binding.btnDone.setOnClickListener {
             val finalMap = subjectAdapter.getUpdatedAssignments()
             finalMap.forEach { (subjectId, teacherId) ->
-                Log.d("FinalAssignments", "Subject ID: $subjectId -> Teacher ID: $teacherId")
+//                Log.d("FinalAssignments", "Subject ID: $subjectId -> Teacher ID: $teacherId")
             }
 
             val currentAssignments = schoolClass.subjectAssignments

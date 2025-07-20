@@ -2,6 +2,7 @@ package com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes.assign
 
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -53,7 +54,13 @@ class AssignSubjectAdapter(
         }
 
         private fun applyUiState(buttonText: String, color: Int){
-            binding.btnAssignTeacher.text = buttonText
+            if (buttonText == "Unassign") {
+                binding.btnAssignTeacher.visibility = View.GONE
+            } else {
+                binding.btnAssignTeacher.visibility = View.VISIBLE
+            }
+
+
 
             binding.ivClassIcon.setColorFilter(
                 ContextCompat.getColor(binding.root.context, color),
