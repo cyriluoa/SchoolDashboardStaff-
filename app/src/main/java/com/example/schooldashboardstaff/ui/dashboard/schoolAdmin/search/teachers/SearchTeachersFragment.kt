@@ -1,5 +1,7 @@
 package com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.search.teachers
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -82,11 +84,15 @@ class SearchTeachersFragment : Fragment() {
 
         binding.btnAssignTeachers.setOnClickListener {
             selectedTeacher?.let { teacher: User ->
-                // 🔜 In future: call assign logic here
-                Toast.makeText(requireContext(), "Selected: ${teacher.username}", Toast.LENGTH_SHORT).show()
+                val resultIntent = Intent().apply {
+                    putExtra("subjectId", subject.id)
+                    putExtra("teacherId", teacher.uid)
+                }
+                requireActivity().setResult(Activity.RESULT_OK, resultIntent)
                 requireActivity().finish()
             } ?: Toast.makeText(requireContext(), "Please select a teacher", Toast.LENGTH_SHORT).show()
         }
+
     }
 
     override fun onDestroyView() {

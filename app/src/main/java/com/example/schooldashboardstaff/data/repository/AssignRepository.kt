@@ -1,6 +1,8 @@
 package com.example.schooldashboardstaff.data.repository
 
+import android.util.Log
 import com.example.schooldashboardstaff.data.firebase.AssignManager
+import com.example.schooldashboardstaff.data.model.SchoolClass
 import com.example.schooldashboardstaff.data.model.Subject
 import javax.inject.Inject
 
@@ -16,4 +18,34 @@ class AssignRepository @Inject constructor(
     ) {
         assignManager.assignSubjectsToClass(schoolId, classId, selectedSubjects, periodsLeft, assignedSubjects)
     }
+
+    suspend fun assignTeachersToSubjects(
+        schoolClass: SchoolClass,
+        updatedAssignments: Map<String, String>,
+        subjects: List<Subject>
+    ) {
+        try {
+            Log.d("AssignManager", "Step 1: Updating users for assignments")
+            assignManager.updateUsersForAssignments(
+                schoolId = schoolClass.schoolId,
+                schoolClassId = schoolClass.id,
+                updatedAssignments = updatedAssignments,
+                subjects = subjects
+            )
+
+            Log.d("AssignManager", "Step 2: Updating class assignments")
+            assignManager.updateClassAssignments(
+                schoolClass = schoolClass,
+                updatedAssignments = updatedAssignments
+            )
+
+            Log.d("AssignManager", "✅ Both updates done")
+        } catch (e: Exception) {
+            Log.e("AssignManager", "❌ assignTeachersToSubjects failed", e)
+            throw e
+        }
+    }
+
+
+
 }

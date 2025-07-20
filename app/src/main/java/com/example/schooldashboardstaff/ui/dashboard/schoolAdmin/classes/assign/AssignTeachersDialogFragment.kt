@@ -3,6 +3,8 @@ package com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes.assign
 
 
 
+import android.R
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +12,8 @@ import androidx.fragment.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,11 +33,22 @@ class AssignTeachersDialogFragment : DialogFragment() {
 
     private lateinit var schoolClass: SchoolClass
     private val sharedViewModel: SharedSchoolViewModel by activityViewModels()
-
     private val assignSubjectDialogViewModel: AssignSubjectDialogViewModel by viewModels()
+
     private lateinit var subjectAdapter: AssignSubjectAdapter
+    private val updatedAssignments = mutableMapOf<String, String>()
 
+    private val assignTeacherLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data = result.data
+                val subjectId = data?.getStringExtra("subjectId") ?: return@registerForActivityResult
+                val teacherId = data.getStringExtra("teacherId") ?: return@registerForActivityResult
 
+                updatedAssignments[subjectId] = teacherId
+                subjectAdapter.updateAssignment(subjectId, teacherId)
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,22 +65,22 @@ class AssignTeachersDialogFragment : DialogFragment() {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog?.window?.setBackgroundDrawableResource(R.color.transparent)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         arguments?.getParcelable<SchoolClass>(KEY_SCHOOL_CLASS)?.let {
             schoolClass = it
+            updatedAssignments.putAll(it.subjectAssignments)
         } ?: dismiss()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 1. Setup adapter
         subjectAdapter = AssignSubjectAdapter(
-            subjectAssignments = schoolClass.subjectAssignments,
+            initialAssignments  = updatedAssignments,
             onAssignClick = { subject ->
                 val intent = SearchActivity.createIntentForAssignTeacher(
                     requireContext(),
@@ -73,29 +88,52 @@ class AssignTeachersDialogFragment : DialogFragment() {
                     subject = subject,
                     schoolClass = schoolClass
                 )
-                startActivity(intent)
+                assignTeacherLauncher.launch(intent)
             }
         )
-
 
         binding.rvSubjects.adapter = subjectAdapter
         binding.rvSubjects.layoutManager = LinearLayoutManager(requireContext())
 
-        // 2. Fetch subjects
         val subjectIds = schoolClass.subjectAssignments.keys.toList()
         assignSubjectDialogViewModel.fetchSubjectsForClass(schoolClass.schoolId, subjectIds)
 
-        // 3. Observe and submit list
         assignSubjectDialogViewModel.subjects.observe(viewLifecycleOwner) { subjectList ->
-            Log.d("AssignTeachersDialogFragment", subjectList.toString())
             subjectAdapter.setSubjects(subjectList)
         }
 
-        // 4. Cancel button
+        assignSubjectDialogViewModel.assignmentSuccess.observe(viewLifecycleOwner) { success ->
+            if (success) {
+                Toast.makeText(requireContext(), "Assignment successful", Toast.LENGTH_SHORT).show()
+                dismiss()
+            } else {
+                Toast.makeText(requireContext(), "Assignment failed", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
         binding.btnCancel.setOnClickListener { dismiss() }
+
+        binding.btnDone.setOnClickListener {
+            val finalMap = subjectAdapter.getUpdatedAssignments()
+            finalMap.forEach { (subjectId, teacherId) ->
+                Log.d("FinalAssignments", "Subject ID: $subjectId -> Teacher ID: $teacherId")
+            }
+
+            val currentAssignments = schoolClass.subjectAssignments
+            if (finalMap != currentAssignments) {
+                val subjects = assignSubjectDialogViewModel.subjects.value.orEmpty()
+                assignSubjectDialogViewModel.assignTeachersToSubjects(
+                    schoolClass = schoolClass,
+                    subjects = subjects,
+                    updatedAssignments = finalMap
+                )
+            } else {
+                Toast.makeText(requireContext(), "No changes to assign", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -114,4 +152,5 @@ class AssignTeachersDialogFragment : DialogFragment() {
         }
     }
 }
+
 

@@ -1,5 +1,6 @@
 package com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.search
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle

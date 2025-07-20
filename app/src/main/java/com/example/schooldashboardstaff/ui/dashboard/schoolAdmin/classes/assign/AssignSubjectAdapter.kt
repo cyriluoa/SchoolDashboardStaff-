@@ -10,11 +10,13 @@ import com.example.schooldashboardstaff.data.model.Subject
 import com.example.schooldashboardstaff.databinding.ItemAssignSubjectBinding
 
 class AssignSubjectAdapter(
-    private val subjectAssignments: Map<String, String>,
+    initialAssignments: Map<String, String>,
     private val onAssignClick: (Subject) -> Unit
 ) : RecyclerView.Adapter<AssignSubjectAdapter.SubjectViewHolder>() {
 
     private val subjects = mutableListOf<Subject>()
+
+    private val subjectAssignments = initialAssignments.toMutableMap()
 
     inner class SubjectViewHolder(private val binding: ItemAssignSubjectBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -32,8 +34,10 @@ class AssignSubjectAdapter(
 
             // Update button style
             if (isAssigned) {
+                binding.btnAssignTeacher.setBackgroundResource(R.drawable.green_button_background)
                 applyUiState("Unassign", R.color.green)
             } else {
+                binding.btnAssignTeacher.setBackgroundResource(R.drawable.red_button_background)
                 applyUiState("Assign", R.color.primary_red)
             }
 
@@ -50,7 +54,7 @@ class AssignSubjectAdapter(
 
         private fun applyUiState(buttonText: String, color: Int){
             binding.btnAssignTeacher.text = buttonText
-            binding.btnAssignTeacher.setBackgroundResource(R.drawable.green_button_background)
+
             binding.ivClassIcon.setColorFilter(
                 ContextCompat.getColor(binding.root.context, color),
                 PorterDuff.Mode.SRC_IN
@@ -83,6 +87,15 @@ class AssignSubjectAdapter(
         subjects.clear()
         subjects.addAll(newSubjects)
         notifyDataSetChanged()
+    }
+
+    fun updateAssignment(subjectId: String, teacherId: String) {
+        subjectAssignments[subjectId] = teacherId
+        notifyDataSetChanged()
+    }
+
+    fun getUpdatedAssignments(): Map<String, String> {
+        return subjectAssignments.toMap()
     }
 }
 
