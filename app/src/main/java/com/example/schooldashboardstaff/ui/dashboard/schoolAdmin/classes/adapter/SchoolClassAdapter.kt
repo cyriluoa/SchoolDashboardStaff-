@@ -1,22 +1,23 @@
-package com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes
+package com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes.adapter
 
 import android.content.Intent
-import android.util.Log
+import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.schooldashboardstaff.databinding.ItemSchoolClassBinding
 import com.example.schooldashboardstaff.data.model.SchoolClass
 import com.example.schooldashboardstaff.data.model.SchoolClassState
+import com.example.schooldashboardstaff.databinding.ItemSchoolClassBinding
+import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes.SchoolClassViewerActivity
 import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes.assign.AssignTeachersDialogFragment
 import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.search.SearchActivity
+import com.example.schooldashboardstaff.utils.Constants
 
 class SchoolClassAdapter(
     private val assignClassTeacherLauncher: ActivityResultLauncher<Intent>,
@@ -55,7 +56,7 @@ class SchoolClassAdapter(
 
             binding.btnAssignSubjects.setOnClickListener {
                 val context = binding.root.context
-                val intent = SearchActivity.createIntentForClass(
+                val intent = SearchActivity.Companion.createIntentForClass(
                     context = context,
                     schoolId = schoolClass.schoolId,
                     classId = schoolClass.id,
@@ -67,19 +68,28 @@ class SchoolClassAdapter(
             }
 
             binding.btnAssignTeachers.setOnClickListener {
-                val dialog = AssignTeachersDialogFragment.newInstance(schoolClass)
+                val dialog = AssignTeachersDialogFragment.Companion.newInstance(schoolClass)
                 dialog.show(fragmentManager, "AssignTeachersDialog")
             }
 
             binding.btnAssignClassTeacher.setOnClickListener {
                 val context = binding.root.context
-                val intent = SearchActivity.createIntentForAssignClassTeacher(
+                val intent = SearchActivity.Companion.createIntentForAssignClassTeacher(
                     context = context,
                     schoolId = schoolClass.schoolId,
                     schoolClass = schoolClass
                 )
                 assignClassTeacherLauncher.launch(intent)
             }
+
+            binding.btnExpandSchool.setOnClickListener {
+                val context = binding.root.context
+                val intent = Intent(context, SchoolClassViewerActivity::class.java).apply {
+                    putExtra(Constants.CLASS_OBJECT_KEY, schoolClass)
+                }
+                context.startActivity(intent)
+            }
+
 
 
 
@@ -98,6 +108,7 @@ class SchoolClassAdapter(
             // Set button tints
             val buttons = listOf(
                 binding.btnAssignStudents,
+                binding.btnExpandSchool,
                 binding.btnAssignTeachers,
                 binding.btnAssignClassTeacher,
                 binding.btnAssignSubjects,
@@ -106,7 +117,7 @@ class SchoolClassAdapter(
             )
 
             buttons.forEach { btn ->
-                btn.setColorFilter(ContextCompat.getColor(context, state.colorResId), android.graphics.PorterDuff.Mode.SRC_IN)
+                btn.setColorFilter(ContextCompat.getColor(context, state.colorResId), PorterDuff.Mode.SRC_IN)
             }
 
             // Reset all to GONE
@@ -141,7 +152,7 @@ class SchoolClassAdapter(
                 }
                 SchoolClassState.UNSTABLE_CLASS_TEACHER_ASSIGNED -> {
                     // Show: Assign Teachers, Edit, Delete
-                    listOf(binding.btnAssignStudents, binding.btnEdit, binding.btnDelete).forEach {
+                    listOf(binding.btnAssignStudents,binding.btnExpandSchool, binding.btnEdit, binding.btnDelete).forEach {
                         it.visibility = View.VISIBLE
                     }
                 }

@@ -130,6 +130,17 @@
                 android:gravity="end"
                 android:paddingTop="4dp">
 
+                <ImageButton
+                    android:id="@+id/btnExpandSchool"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:visibility="gone"
+                    android:contentDescription="View More"
+                    app:tint="@color/primary_red"
+                    android:src="@drawable/ic_expand"/>
+
                 <!-- Assign Students Button -->
                 <ImageButton
                     android:id="@+id/btnAssignStudents"

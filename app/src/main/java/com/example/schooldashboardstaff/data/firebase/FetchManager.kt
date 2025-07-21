@@ -1,6 +1,7 @@
 package com.example.schooldashboardstaff.data.firebase
 
 import com.example.schooldashboardstaff.data.model.Subject
+import com.example.schooldashboardstaff.data.model.User
 import com.example.schooldashboardstaff.utils.Constants
 import jakarta.inject.Inject
 
@@ -29,6 +30,26 @@ class FetchManager @Inject constructor() : FirestoreManager() {
                 onSuccess(subjects)
             }
             .addOnFailureListener { onFailure(it) }
+    }
+
+    fun getUsersByIds(
+        userIds: List<String>,
+        onSuccess: (List<User>) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        if (userIds.isEmpty()) {
+            onSuccess(emptyList())
+            return
+        }
+
+        db.collection(Constants.USERS_COLLECTION)
+            .whereIn("uid", userIds)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val users = snapshot.toObjects(User::class.java)
+                onSuccess(users)
+            }
+            .addOnFailureListener(onFailure)
     }
 }
 

@@ -23,4 +23,10 @@ data class User(
     var isClassTeacher: Boolean? = null,
     val maxPeriods: Int? = null,
     val assignedPeriods: Int? = null
-) : Parcelable
+) : Parcelable{
+
+    val fullName : String
+        get() = firstname + " " + lastname
+}
+
+

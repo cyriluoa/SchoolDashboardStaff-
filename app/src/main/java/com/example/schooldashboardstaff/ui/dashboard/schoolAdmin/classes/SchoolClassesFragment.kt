@@ -17,6 +17,7 @@ import com.example.schooldashboardstaff.data.model.SchoolClass
 import com.example.schooldashboardstaff.data.model.User
 import com.example.schooldashboardstaff.databinding.FragmentSchoolClassesBinding
 import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.SharedSchoolViewModel
+import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes.adapter.SchoolClassAdapter
 import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes.assign.AssignClassTeacherViewModel
 import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes.populate.MissingGradeDialogFragment
 import com.example.schooldashboardstaff.ui.schoolclass.AddEditSchoolClassActivity

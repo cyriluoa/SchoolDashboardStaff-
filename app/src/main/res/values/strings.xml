@@ -68,5 +68,9 @@
     <string name="max_periods">Max Periods</string>
     <string name="assign_subject">Assign Subject</string>
     <string name="assign_subjects">Assign Subjects</string>
+    <string name="john_doe">John Doe</string>
+    <string name="periods_5">Periods: 5</string>
+    <string name="mr_john_doe">Mr. John Doe</string>
+    <string name="mathematics">Mathematics</string>
 
 </resources>
