@@ -15,6 +15,7 @@ import com.example.schooldashboardstaff.databinding.FragmentSchoolAdminDashboard
 import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes.SchoolClassesFragment
 import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.subjects.SubjectsFragment
 import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.teachers.TeachersFragment
+import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.timetable.TimetableFragment
 import com.example.schooldashboardstaff.utils.Constants
 
 class SchoolAdminDashboardFragment: Fragment() {
@@ -52,6 +53,7 @@ class SchoolAdminDashboardFragment: Fragment() {
         setDashboardTile(binding.itemSubjects, R.drawable.ic_subjects, "Subjects")
         setDashboardTile(binding.itemStudents, R.drawable.ic_student, "Students")
         setDashboardTile(binding.itemHolidays, R.drawable.ic_holidays, "Holidays")
+        setDashboardTile(binding.itemTimetable, R.drawable.ic_timetable, "Timetable")
 
         val currentUser = requireActivity()
             .intent.getParcelableExtra<User>(Constants.USER_OBJECT_INTENT_KEY) ?: return
@@ -97,6 +99,13 @@ class SchoolAdminDashboardFragment: Fragment() {
 
         binding.itemHolidays.setOnClickListener {
             Toast.makeText(requireContext(), "Navigate to Holidays", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.itemTimetable.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, TimetableFragment(),"TimetableFragment")
+                .addToBackStack("TimetableFragment")
+                .commit()
         }
     }
 

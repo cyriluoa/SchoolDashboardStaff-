@@ -102,6 +102,13 @@ class AssignTeachersDialogFragment : DialogFragment() {
             subjectAdapter.setSubjects(subjectList)
         }
 
+        assignSubjectDialogViewModel.loading.observe(viewLifecycleOwner) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            binding.btnDone.isEnabled = !isLoading
+            binding.btnCancel.isEnabled = !isLoading
+        }
+
+
         assignSubjectDialogViewModel.assignmentSuccess.observe(viewLifecycleOwner) { success ->
             if (success) {
                 Toast.makeText(requireContext(), "Assignment successful", Toast.LENGTH_SHORT).show()

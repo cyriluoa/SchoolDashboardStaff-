@@ -1,8 +1,10 @@
 package com.example.schooldashboardstaff.data.firebase
 
+import com.example.schooldashboardstaff.data.model.SchoolClass
 import com.example.schooldashboardstaff.data.model.Subject
 import com.example.schooldashboardstaff.data.model.User
 import com.example.schooldashboardstaff.utils.Constants
+import com.google.firebase.firestore.ListenerRegistration
 import jakarta.inject.Inject
 
 
@@ -51,5 +53,27 @@ class FetchManager @Inject constructor() : FirestoreManager() {
             }
             .addOnFailureListener(onFailure)
     }
+
+    fun listenToSchoolClasses(
+        schoolId: String,
+        onSuccess: (List<SchoolClass>) -> Unit,
+        onFailure: (Exception) -> Unit
+    ): ListenerRegistration {
+        return db.collection(Constants.SCHOOLS_COLLECTION)
+            .document(schoolId)
+            .collection(Constants.SCHOOL_CLASSES_COLLECTION)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    onFailure(error)
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null) {
+                    val classes = snapshot.toObjects(SchoolClass::class.java)
+                    onSuccess(classes)
+                }
+            }
+    }
+
 }
 

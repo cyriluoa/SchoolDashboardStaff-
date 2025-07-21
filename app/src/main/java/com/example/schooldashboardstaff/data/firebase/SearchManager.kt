@@ -97,7 +97,7 @@ class SearchManager @Inject constructor(): FirestoreManager() {
             }
         }
 
-        val eligibleTeacherIds = teacherIdToPeriodCount.filter { it.value >= 6 }.keys
+        val eligibleTeacherIds = teacherIdToPeriodCount.filter { it.value >= 5 }.keys
 
         // Step 2: Fetch those users from Firestore
         val candidates = mutableListOf<User>()

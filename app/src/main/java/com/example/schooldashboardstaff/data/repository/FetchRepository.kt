@@ -5,6 +5,7 @@ import com.example.schooldashboardstaff.data.model.DisplaySubjectTeacher
 import com.example.schooldashboardstaff.data.model.SchoolClass
 import com.example.schooldashboardstaff.data.model.Subject
 import com.example.schooldashboardstaff.data.model.User
+import com.google.firebase.firestore.ListenerRegistration
 import jakarta.inject.Inject
 
 
@@ -75,5 +76,14 @@ class FetchRepository @Inject constructor(
             onFailure = onFailure
         )
     }
+
+    fun listenToSchoolClasses(
+        schoolId: String,
+        onSuccess: (List<SchoolClass>) -> Unit,
+        onFailure: (Exception) -> Unit
+    ): ListenerRegistration {
+        return fetchManager.listenToSchoolClasses(schoolId, onSuccess, onFailure)
+    }
+
 }
 

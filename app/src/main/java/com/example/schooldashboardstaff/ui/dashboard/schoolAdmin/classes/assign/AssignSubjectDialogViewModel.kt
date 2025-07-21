@@ -25,6 +25,10 @@ class AssignSubjectDialogViewModel @Inject constructor(
     private val _assignmentSuccess = MutableLiveData<Boolean>()
     val assignmentSuccess: LiveData<Boolean> get() = _assignmentSuccess
 
+    private val _loading = MutableLiveData(false)
+    val loading: LiveData<Boolean> get() = _loading
+
+
     fun fetchSubjectsForClass(schoolId: String, subjectIds: List<String>) {
         fetchRepository.getSubjectsByIds(
             schoolId = schoolId,
@@ -48,6 +52,7 @@ class AssignSubjectDialogViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             try {
+                _loading.postValue(true)
                 assignRepository.assignTeachersToSubjects(
                     schoolClass = schoolClass,
                     updatedAssignments = updatedAssignments,
@@ -58,6 +63,8 @@ class AssignSubjectDialogViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.e("AssignSubjectVM", "Assignment failed", e)
                 _assignmentSuccess.postValue(false)
+            } finally {
+                _loading.postValue(false)
             }
         }
     }

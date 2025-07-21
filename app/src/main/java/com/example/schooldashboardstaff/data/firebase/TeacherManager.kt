@@ -156,10 +156,6 @@ class TeacherManager @Inject constructor(
                     return@addSnapshotListener
                 }
 
-                snapshot.documents.forEach { doc ->
-                    Log.d("DeserializationDebug", "Document ID: ${doc.id}, Data: ${doc.data}")
-                }
-
                 val teachers = snapshot.toObjects(User::class.java)
                 onUpdate(teachers)
             }
