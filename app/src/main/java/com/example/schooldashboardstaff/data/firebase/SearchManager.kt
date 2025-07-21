@@ -105,7 +105,7 @@ class SearchManager @Inject constructor(): FirestoreManager() {
             try {
                 val snapshot = userCollection.document(teacherId).get().await()
                 val user = snapshot.toObject(User::class.java)
-                if (user != null) {
+                if (user != null && user.role == UserRole.TEACHER && user.isClassTeacher!= null && user.isClassTeacher == false) {
                     candidates.add(user)
                 }
             } catch (e: Exception) {
