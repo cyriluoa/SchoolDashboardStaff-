@@ -70,6 +70,7 @@ object Constants {
 
 
     const val SEARCH_TEACHERS = "SEARCH_TEACHERS"
+    const val SEARCH_CLASS_TEACHER = "SEARCH_CLASS_TEACHER"
     const val SEARCH_CLASSES = "SEARCH_CLASSES"
     const val SEARCH_STUDENTS = "SEARCH_STUDENTS"
 

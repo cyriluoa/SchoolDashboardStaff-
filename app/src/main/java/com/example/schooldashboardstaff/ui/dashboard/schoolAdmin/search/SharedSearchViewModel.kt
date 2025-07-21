@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.schooldashboardstaff.data.model.SchoolClass
 import com.example.schooldashboardstaff.data.model.Subject
 import com.example.schooldashboardstaff.data.model.User
 import com.example.schooldashboardstaff.data.repository.SearchRepository
@@ -61,6 +62,22 @@ class SharedSearchViewModel @Inject constructor(
         currentSubject = subject
         searchTeachersToAssign(schoolId, subject)
     }
+
+    fun initSearchClassTeacherCandidates(schoolId: String, schoolClass: SchoolClass) {
+        viewModelScope.launch {
+            _loading.value = true
+            try {
+                val candidates = searchRepository.getClassTeacherCandidates(schoolId, schoolClass)
+                _searchResults.value = candidates
+            } catch (e: Exception) {
+                Log.e("SharedSearchVM", "Error loading class teacher candidates", e)
+                _searchResults.value = emptyList()
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
 
 
     fun updateQuery(query: String) {

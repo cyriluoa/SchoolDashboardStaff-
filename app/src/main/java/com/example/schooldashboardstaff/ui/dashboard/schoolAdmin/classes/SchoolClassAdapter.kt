@@ -65,6 +65,17 @@ class SchoolClassAdapter : ListAdapter<SchoolClass, SchoolClassAdapter.ClassView
                 dialog.show(fragmentManager, "AssignTeachersDialog")
             }
 
+            binding.btnAssignClassTeacher.setOnClickListener {
+                val context = binding.root.context
+                val intent = SearchActivity.createIntentForAssignClassTeacher(
+                    context = context,
+                    schoolId = schoolClass.schoolId,
+                    schoolClass = schoolClass
+                )
+                context.startActivity(intent)
+            }
+
+
 
         }
 

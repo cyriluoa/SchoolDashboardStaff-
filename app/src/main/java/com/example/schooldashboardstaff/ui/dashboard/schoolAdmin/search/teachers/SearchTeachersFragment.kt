@@ -28,7 +28,7 @@ class SearchTeachersFragment : Fragment() {
 
     private lateinit var adapter: SearchTeacherAdapter
     private lateinit var schoolId: String
-    private lateinit var subject: Subject
+    private var subject: Subject? = null
     private lateinit var schoolClass: SchoolClass
 
     private var selectedTeacher: User? = null
@@ -37,8 +37,19 @@ class SearchTeachersFragment : Fragment() {
         fun newInstance(schoolId: String, subject: Subject, schoolClass: SchoolClass): SearchTeachersFragment {
             return SearchTeachersFragment().apply {
                 arguments = Bundle().apply {
+                    putString(Constants.SEARCH_TYPE_KEY, Constants.SEARCH_TEACHERS)
                     putString(Constants.SCHOOL_ID_KEY, schoolId)
                     putParcelable(Constants.SUBJECT_OBJECT_KEY, subject)
+                    putParcelable(Constants.CLASS_OBJECT_KEY, schoolClass)
+                }
+            }
+        }
+
+        fun newInstanceForClassTeacher(schoolId: String, schoolClass: SchoolClass): SearchTeachersFragment {
+            return SearchTeachersFragment().apply {
+                arguments = Bundle().apply {
+                    putString(Constants.SEARCH_TYPE_KEY, Constants.SEARCH_CLASS_TEACHER)
+                    putString(Constants.SCHOOL_ID_KEY, schoolId)
                     putParcelable(Constants.CLASS_OBJECT_KEY, schoolClass)
                 }
             }
@@ -57,42 +68,55 @@ class SearchTeachersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Retrieve arguments
-        schoolId = requireArguments().getString(Constants.SCHOOL_ID_KEY).orEmpty()
-        subject = requireArguments().getParcelable(Constants.SUBJECT_OBJECT_KEY)!!
-        schoolClass = requireArguments().getParcelable(Constants.CLASS_OBJECT_KEY)!!
+        val args = requireArguments()
+        val searchType = args.getString(Constants.SEARCH_TYPE_KEY) ?: Constants.SEARCH_TEACHERS
+        schoolId = args.getString(Constants.SCHOOL_ID_KEY).orEmpty()
+        schoolClass = args.getParcelable(Constants.CLASS_OBJECT_KEY)
+            ?: throw IllegalArgumentException("Missing class object for teacher search")
+        subject = args.getParcelable(Constants.SUBJECT_OBJECT_KEY) // optional in class teacher flow
 
         // Setup adapter
         adapter = SearchTeacherAdapter { teacher ->
             selectedTeacher = teacher
         }
 
-        searchViewModel.initSearchTeachersForAssign(schoolId, subject)
-
         binding.rvTeachers.adapter = adapter
         binding.rvTeachers.layoutManager = LinearLayoutManager(requireContext())
 
-        // Observe LiveData from ViewModel
+        // 🔁 Trigger correct VM search
+        if (searchType == Constants.SEARCH_CLASS_TEACHER) {
+            searchViewModel.initSearchClassTeacherCandidates(schoolId, schoolClass)
+        } else {
+            subject?.let {
+                searchViewModel.initSearchTeachersForAssign(schoolId, it)
+            } ?: run {
+                Toast.makeText(requireContext(), "Missing subject for teacher assignment", Toast.LENGTH_SHORT).show()
+                requireActivity().finish()
+                return
+            }
+        }
+
+        // 🔁 Observe teachers list
         searchViewModel.searchResults.observe(viewLifecycleOwner) { teachers ->
             adapter.submitList(teachers)
         }
 
-        // Button listeners
+        // Cancel button
         binding.btnCancel.setOnClickListener {
             requireActivity().finish()
         }
 
+        // Assign button
         binding.btnAssignTeachers.setOnClickListener {
-            selectedTeacher?.let { teacher: User ->
+            selectedTeacher?.let { teacher ->
                 val resultIntent = Intent().apply {
-                    putExtra("subjectId", subject.id)
+                    subject?.let { putExtra("subjectId", it.id) } // only for subject assignment
                     putExtra("teacherId", teacher.uid)
                 }
                 requireActivity().setResult(Activity.RESULT_OK, resultIntent)
                 requireActivity().finish()
             } ?: Toast.makeText(requireContext(), "Please select a teacher", Toast.LENGTH_SHORT).show()
         }
-
     }
 
     override fun onDestroyView() {
@@ -100,4 +124,5 @@ class SearchTeachersFragment : Fragment() {
         _binding = null
     }
 }
+
 

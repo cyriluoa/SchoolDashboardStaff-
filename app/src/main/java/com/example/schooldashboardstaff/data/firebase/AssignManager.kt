@@ -109,10 +109,10 @@ class AssignManager @Inject constructor() : FirestoreManager() {
                 val teacherRef = userCollection.document(teacherId)
                 val snapshot = teacherRef.get().await()
                 val user = snapshot.toObject(User::class.java)
-                Log.d("User",user.toString())
+//                Log.d("User",user.toString())
 
                 if (user?.subjectToClassMap != null) {
-                    Log.d("Map",user.subjectToClassMap.toString())
+//                    Log.d("Map",user.subjectToClassMap.toString())
                     var totalAssigned = 0
                     for ((subjectId, classList) in user.subjectToClassMap) {
 //                        Log.d("Subject ID",subjectId)

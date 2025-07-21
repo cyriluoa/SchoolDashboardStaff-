@@ -4,6 +4,7 @@ package com.example.schooldashboardstaff.data.firebase
 
 import android.provider.SyncStateContract
 import android.util.Log
+import com.example.schooldashboardstaff.data.model.SchoolClass
 import com.example.schooldashboardstaff.data.model.Subject
 import com.example.schooldashboardstaff.data.model.User
 import com.example.schooldashboardstaff.data.model.UserRole
@@ -78,5 +79,42 @@ class SearchManager @Inject constructor(): FirestoreManager() {
             emptyList()
         }
     }
+
+    suspend fun getClassTeacherCandidates(schoolId: String, schoolClass: SchoolClass): List<User> {
+        val userCollection = db.collection(Constants.USERS_COLLECTION)
+        val subjectsCollection = db.collection(Constants.SCHOOLS_COLLECTION).document(schoolId).collection(Constants.SUBJECTS_COLLECTION)
+
+        val teacherIdToPeriodCount = mutableMapOf<String, Int>()
+
+        // Step 1: Loop through all subject assignments for the class
+        for ((subjectId, teacherId) in schoolClass.subjectAssignments) {
+            try {
+                val subjectSnap = subjectsCollection.document(subjectId).get().await()
+                val periodCount = subjectSnap.getLong("periodCount")?.toInt() ?: 0
+                teacherIdToPeriodCount[teacherId] = teacherIdToPeriodCount.getOrDefault(teacherId, 0) + periodCount
+            } catch (e: Exception) {
+                Log.e("SearchManager", "Error fetching subject $subjectId", e)
+            }
+        }
+
+        val eligibleTeacherIds = teacherIdToPeriodCount.filter { it.value >= 6 }.keys
+
+        // Step 2: Fetch those users from Firestore
+        val candidates = mutableListOf<User>()
+        for (teacherId in eligibleTeacherIds) {
+            try {
+                val snapshot = userCollection.document(teacherId).get().await()
+                val user = snapshot.toObject(User::class.java)
+                if (user != null) {
+                    candidates.add(user)
+                }
+            } catch (e: Exception) {
+                Log.e("SearchManager", "Error fetching user $teacherId", e)
+            }
+        }
+
+        return candidates
+    }
+
 
 }

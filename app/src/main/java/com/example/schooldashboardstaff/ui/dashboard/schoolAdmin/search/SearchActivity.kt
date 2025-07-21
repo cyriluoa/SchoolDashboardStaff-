@@ -69,6 +69,19 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
+        fun createIntentForAssignClassTeacher(
+            context: Context,
+            schoolId: String,
+            schoolClass: SchoolClass
+        ): Intent {
+            return Intent(context, SearchActivity::class.java).apply {
+                putExtra(Constants.SEARCH_TYPE_KEY, Constants.SEARCH_CLASS_TEACHER)
+                putExtra(Constants.SCHOOL_ID_KEY, schoolId)
+                putExtra(Constants.CLASS_OBJECT_KEY, schoolClass)
+            }
+        }
+
+
     }
 
 
@@ -161,6 +174,17 @@ class SearchActivity : AppCompatActivity() {
                     schoolClass = params.schoolClass
                 )
             }
+            Constants.SEARCH_CLASS_TEACHER -> {
+                if (params.schoolClass == null) {
+                    finishWithError("Missing class for assigning class teacher")
+                    return
+                }
+                SearchTeachersFragment.newInstanceForClassTeacher(
+                    schoolId = params.schoolId,
+                    schoolClass = params.schoolClass
+                )
+            }
+
 
 
             else -> {
