@@ -1,21 +1,30 @@
 package com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.schooldashboardstaff.data.model.School
+import com.example.schooldashboardstaff.data.model.SchoolClass
+import com.example.schooldashboardstaff.data.model.User
 import com.example.schooldashboardstaff.databinding.FragmentSchoolClassesBinding
 import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.SharedSchoolViewModel
+import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes.assign.AssignClassTeacherViewModel
 import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes.populate.MissingGradeDialogFragment
 import com.example.schooldashboardstaff.ui.schoolclass.AddEditSchoolClassActivity
 import com.example.schooldashboardstaff.utils.Constants
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class SchoolClassesFragment : Fragment() {
 
     private var _binding: FragmentSchoolClassesBinding? = null
@@ -26,6 +35,24 @@ class SchoolClassesFragment : Fragment() {
 
     private var currentSchool: School? = null
     private lateinit var viewModel: SchoolClassesViewModel
+    private val assignClassTeacherViewModel: AssignClassTeacherViewModel by viewModels()
+
+
+    private val assignClassTeacherLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            val schoolId = data?.getStringExtra(Constants.SCHOOL_ID_KEY)
+            val schoolClass = data?.getParcelableExtra<SchoolClass>(Constants.CLASS_OBJECT_KEY)
+            val teacher = data?.getParcelableExtra<User>(Constants.USER_OBJECT_INTENT_KEY)
+
+            if (schoolId != null && schoolClass != null && teacher != null) {
+                // ✅ Call ViewModel cleanly
+                assignClassTeacherViewModel.assignClassTeacher(schoolId, schoolClass, teacher)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +73,7 @@ class SchoolClassesFragment : Fragment() {
                 viewModel = SchoolClassesViewModel(it)
                 setupRecyclerView()
                 setupFabClick()
+                setupObservers()
                 binding.btnPopulateMissingGrades.setOnClickListener {
                     val missingGrades = viewModel.missingGrades.value ?: return@setOnClickListener
 
@@ -58,10 +86,15 @@ class SchoolClassesFragment : Fragment() {
                     dialog.show(childFragmentManager, "MissingGradeDialog")
                 }
 
-                setupObservers()
+
                 // No need to call viewModel.listenToClasses() here — it's done in init
             }
         }
+
+        assignClassTeacherViewModel.message.observe(viewLifecycleOwner) { msg ->
+            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     override fun onDestroyView() {
@@ -70,7 +103,7 @@ class SchoolClassesFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = SchoolClassAdapter()
+        adapter = SchoolClassAdapter(assignClassTeacherLauncher, childFragmentManager)
         binding.rvClasses.adapter = adapter
         binding.rvClasses.layoutManager = LinearLayoutManager(requireContext())
     }

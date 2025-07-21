@@ -5,8 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -16,22 +18,29 @@ import com.example.schooldashboardstaff.data.model.SchoolClassState
 import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.classes.assign.AssignTeachersDialogFragment
 import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.search.SearchActivity
 
-class SchoolClassAdapter : ListAdapter<SchoolClass, SchoolClassAdapter.ClassViewHolder>(DiffCallback()) {
+class SchoolClassAdapter(
+    private val assignClassTeacherLauncher: ActivityResultLauncher<Intent>,
+    private val fragmentManager: FragmentManager
+)
+    : ListAdapter<SchoolClass, SchoolClassAdapter.ClassViewHolder>(DiffCallback()) {
 
     inner class ClassViewHolder(private val binding: ItemSchoolClassBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+
+
         fun bind(schoolClass: SchoolClass) {
             binding.tvGradeSection.text = "Grade ${schoolClass.grade} - Section ${schoolClass.section}"
+            // Class Teacher
+            binding.tvClassTeacher.text = schoolClass.classTeacherId?.let {
+                "Class Teacher: $it"
+            } ?: "Class Teacher: Not assigned"
 
             // Apply state-based UI
             val state = schoolClass.state
             applyStateUi(state,binding)
 
-            // Class Teacher
-            binding.tvClassTeacher.text = schoolClass.classTeacherId?.let {
-                "Class Teacher: $it"
-            } ?: "Class Teacher: Not assigned"
+
 
             // Subjects assigned
             val periodsAssigned = schoolClass.maxPeriods - schoolClass.periodsLeft
@@ -58,9 +67,6 @@ class SchoolClassAdapter : ListAdapter<SchoolClass, SchoolClassAdapter.ClassView
             }
 
             binding.btnAssignTeachers.setOnClickListener {
-                val context = binding.root.context
-                val fragmentManager = (context as AppCompatActivity).supportFragmentManager
-
                 val dialog = AssignTeachersDialogFragment.newInstance(schoolClass)
                 dialog.show(fragmentManager, "AssignTeachersDialog")
             }
@@ -72,7 +78,7 @@ class SchoolClassAdapter : ListAdapter<SchoolClass, SchoolClassAdapter.ClassView
                     schoolId = schoolClass.schoolId,
                     schoolClass = schoolClass
                 )
-                context.startActivity(intent)
+                assignClassTeacherLauncher.launch(intent)
             }
 
 

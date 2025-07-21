@@ -153,6 +153,27 @@ class AssignManager @Inject constructor() : FirestoreManager() {
         }
     }
 
+    suspend fun updateClassTeacherId(
+        schoolId: String,
+        classId: String,
+        teacherId: String
+    ) {
+        val classRef = db.collection(Constants.SCHOOLS_COLLECTION)
+            .document(schoolId)
+            .collection(Constants.SCHOOL_CLASSES_COLLECTION)
+            .document(classId)
+
+        classRef.update("classTeacherId", teacherId).await()
+    }
+
+    suspend fun markUserAsClassTeacher(teacherId: String) {
+        val userRef = db.collection(Constants.USERS_COLLECTION).document(teacherId)
+        
+        userRef.update("isClassTeacher", true).await()
+    }
+
+
+
 
 
 }

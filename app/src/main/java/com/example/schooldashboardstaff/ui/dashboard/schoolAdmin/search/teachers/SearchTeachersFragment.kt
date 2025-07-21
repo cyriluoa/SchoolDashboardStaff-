@@ -110,13 +110,23 @@ class SearchTeachersFragment : Fragment() {
         binding.btnAssignTeachers.setOnClickListener {
             selectedTeacher?.let { teacher ->
                 val resultIntent = Intent().apply {
-                    subject?.let { putExtra("subjectId", it.id) } // only for subject assignment
-                    putExtra("teacherId", teacher.uid)
+                    when (requireArguments().getString(Constants.SEARCH_TYPE_KEY)) {
+                        Constants.SEARCH_CLASS_TEACHER -> {
+                            putExtra(Constants.SCHOOL_ID_KEY, schoolId)
+                            putExtra(Constants.CLASS_OBJECT_KEY, schoolClass)
+                            putExtra(Constants.USER_OBJECT_INTENT_KEY, teacher)
+                        }
+                        else -> {
+                            subject?.let { putExtra("subjectId", it.id) }
+                            putExtra("teacherId", teacher.uid)
+                        }
+                    }
                 }
                 requireActivity().setResult(Activity.RESULT_OK, resultIntent)
                 requireActivity().finish()
             } ?: Toast.makeText(requireContext(), "Please select a teacher", Toast.LENGTH_SHORT).show()
         }
+
     }
 
     override fun onDestroyView() {

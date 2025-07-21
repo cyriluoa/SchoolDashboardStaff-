@@ -1,6 +1,7 @@
 package com.example.schooldashboardstaff.data.model
 
 import android.os.Parcelable
+import com.google.firebase.firestore.PropertyName
 import kotlinx.parcelize.Parcelize
 
 
@@ -17,7 +18,9 @@ data class User(
     val classIds: List<String>? = null,         //Only for teachers and students
     val subjectToClassMap: Map<String, List<String>>? = null, // subjectId → classId
     // For teachers only
-    val isClassTeacher: Boolean? = null,
+    @get:PropertyName("isClassTeacher")
+    @set:PropertyName("isClassTeacher")
+    var isClassTeacher: Boolean? = null,
     val maxPeriods: Int? = null,
     val assignedPeriods: Int? = null
 ) : Parcelable

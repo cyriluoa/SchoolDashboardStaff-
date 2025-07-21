@@ -46,6 +46,22 @@ class AssignRepository @Inject constructor(
         }
     }
 
+    suspend fun assignClassTeacherToClassAndUser(
+        schoolId: String,
+        classId: String,
+        teacherId: String
+    ) {
+        try {
+            assignManager.updateClassTeacherId(schoolId, classId, teacherId)
+            assignManager.markUserAsClassTeacher(teacherId)
+        } catch (e: Exception) {
+            Log.e("AssignRepo", "Failed to assign class teacher", e)
+            throw e
+        }
+    }
+
+
+
 
 
 }
