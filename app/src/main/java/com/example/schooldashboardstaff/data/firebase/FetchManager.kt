@@ -1,5 +1,6 @@
 package com.example.schooldashboardstaff.data.firebase
 
+import android.util.Log
 import com.example.schooldashboardstaff.data.model.SchoolClass
 import com.example.schooldashboardstaff.data.model.Subject
 import com.example.schooldashboardstaff.data.model.User
@@ -22,17 +23,38 @@ class FetchManager @Inject constructor() : FirestoreManager() {
             return
         }
 
-        db.collection(Constants.SCHOOLS_COLLECTION)
+        val dbRef = db.collection(Constants.SCHOOLS_COLLECTION)
             .document(schoolId)
             .collection(Constants.SUBJECTS_COLLECTION)
-            .whereIn("id", subjectIds)
-            .get()
-            .addOnSuccessListener { snapshot ->
-                val subjects = snapshot.toObjects(Subject::class.java)
-                onSuccess(subjects)
-            }
-            .addOnFailureListener { onFailure(it) }
+
+        val chunks = subjectIds.chunked(10) // Firestore allows max 10 values in whereIn
+        val allSubjects = mutableListOf<Subject>()
+        var completed = 0
+        var hasError = false
+
+        chunks.forEach { chunk ->
+            dbRef.whereIn("id", chunk)
+                .get()
+                .addOnSuccessListener { snapshot ->
+                    synchronized(allSubjects) {
+                        allSubjects += snapshot.toObjects(Subject::class.java)
+                        completed++
+                        if (completed == chunks.size && !hasError) {
+                            Log.d("getSubjectsByIds", "Fetched total ${allSubjects.size} subjects successfully.")
+                            onSuccess(allSubjects)
+                        }
+                    }
+                }
+                .addOnFailureListener { e ->
+                    if (!hasError) {
+                        hasError = true
+                        Log.e("getSubjectsByIds", "Failed to fetch subjects chunk: $chunk", e)
+                        onFailure(e)
+                    }
+                }
+        }
     }
+
 
     fun getUsersByIds(
         userIds: List<String>,
@@ -44,15 +66,35 @@ class FetchManager @Inject constructor() : FirestoreManager() {
             return
         }
 
-        db.collection(Constants.USERS_COLLECTION)
-            .whereIn("uid", userIds)
-            .get()
-            .addOnSuccessListener { snapshot ->
-                val users = snapshot.toObjects(User::class.java)
-                onSuccess(users)
-            }
-            .addOnFailureListener(onFailure)
+        val chunks = userIds.chunked(10)
+        val allUsers = mutableListOf<User>()
+        var completed = 0
+        var hasError = false
+
+        chunks.forEach { chunk ->
+            db.collection(Constants.USERS_COLLECTION)
+                .whereIn("uid", chunk)
+                .get()
+                .addOnSuccessListener { snapshot ->
+                    synchronized(allUsers) {
+                        allUsers += snapshot.toObjects(User::class.java)
+                        completed++
+                        if (completed == chunks.size && !hasError) {
+                            Log.d("getUsersByIds", "Fetched total ${allUsers.size} users successfully.")
+                            onSuccess(allUsers)
+                        }
+                    }
+                }
+                .addOnFailureListener { e ->
+                    if (!hasError) {
+                        hasError = true
+                        Log.e("getUsersByIds", "Failed to fetch user chunk: $chunk", e)
+                        onFailure(e)
+                    }
+                }
+        }
     }
+
 
     fun listenToSchoolClasses(
         schoolId: String,
