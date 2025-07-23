@@ -22,6 +22,7 @@ class TimetableFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: TimetableViewModel by viewModels()
+    private val sharedTimetableViewModel: SharedTimetableViewModel by activityViewModels()
     private val sharedSchoolViewModel: SharedSchoolViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -55,15 +56,25 @@ class TimetableFragment : Fragment() {
             binding.progressBar.visibility = View.VISIBLE
             binding.btnGenerate.isEnabled = false
 
-            viewModel.generateTimetable { success ->
+            viewModel.generateTimetable(sharedTimetableViewModel) { success ->
                 binding.progressBar.visibility = View.GONE
                 binding.btnGenerate.isEnabled = true
 
                 if (success) {
                     Toast.makeText(requireContext(), "Timetable generated successfully ✅", Toast.LENGTH_SHORT).show()
 
-                    // Optionally navigate or show UI
-                } else {
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(
+                            R.anim.slide_in_right,  // enter
+                            R.anim.slide_out_left,        // exit
+                            R.anim.slide_in_left,         // popEnter
+                            R.anim.slide_out_right  // popExit
+                        )
+                        .replace(R.id.fragmentContainer, CreatedTimetableDraftFragment())
+                        .addToBackStack(null)
+                        .commit()
+                }
+                else {
                     Toast.makeText(requireContext(), "Failed to generate timetable ❌", Toast.LENGTH_SHORT).show()
                 }
             }

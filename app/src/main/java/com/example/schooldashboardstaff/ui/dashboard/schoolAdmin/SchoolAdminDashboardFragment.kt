@@ -18,7 +18,7 @@ import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.teachers.Teache
 import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.timetable.TimetableFragment
 import com.example.schooldashboardstaff.utils.Constants
 
-class SchoolAdminDashboardFragment: Fragment() {
+class SchoolAdminDashboardFragment : Fragment() {
 
     private var _binding: FragmentSchoolAdminDashboardBinding? = null
     private val binding get() = _binding!!
@@ -55,18 +55,26 @@ class SchoolAdminDashboardFragment: Fragment() {
         setDashboardTile(binding.itemHolidays, R.drawable.ic_holidays, "Holidays")
         setDashboardTile(binding.itemTimetable, R.drawable.ic_timetable, "Timetable")
 
-        val currentUser = requireActivity()
-            .intent.getParcelableExtra<User>(Constants.USER_OBJECT_INTENT_KEY) ?: return
+        val currentUser = activity
+            ?.intent
+            ?.getParcelableExtra<User>(Constants.USER_OBJECT_INTENT_KEY)
+            ?: return
 
         schoolManager.getSchoolById(
             currentUser.schoolId,
             onSuccess = { school ->
-                requireActivity().findViewById<TextView>(R.id.tvWelcomeMessage).text =
-                    "Welcome to ${school.name}'s dashboard"
+                if (isAdded) {
+                    requireActivity()
+                        .findViewById<TextView>(R.id.tvWelcomeMessage).text =
+                        "Welcome to ${school.name}'s dashboard"
+                }
             },
             onFailure = {
-                requireActivity().findViewById<TextView>(R.id.tvWelcomeMessage).text =
-                    "Welcome to Unknown School's dashboard"
+                if (isAdded) {
+                    requireActivity()
+                        .findViewById<TextView>(R.id.tvWelcomeMessage).text =
+                        "Welcome to Unknown School's dashboard"
+                }
             }
         )
     }
@@ -103,7 +111,7 @@ class SchoolAdminDashboardFragment: Fragment() {
 
         binding.itemTimetable.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, TimetableFragment(),"TimetableFragment")
+                .replace(R.id.fragmentContainer, TimetableFragment(), "TimetableFragment")
                 .addToBackStack("TimetableFragment")
                 .commit()
         }

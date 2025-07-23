@@ -30,6 +30,9 @@ class TimetableViewModel @Inject constructor(
     private var cachedSchoolClasses: List<SchoolClass> = emptyList()
     private var listenerRegistration: ListenerRegistration? = null
 
+
+
+
     fun observeSchoolClasses(schoolId: String) {
         listenerRegistration?.remove()
 
@@ -53,7 +56,11 @@ class TimetableViewModel @Inject constructor(
         )
     }
 
-    fun generateTimetable(onComplete: (Boolean) -> Unit) {
+    fun generateTimetable(
+        sharedTimetableViewModel: SharedTimetableViewModel,
+        onComplete: (Boolean) -> Unit
+    )
+    {
         viewModelScope.launch {
             try {
                 // 🔹 Step 1: Gather subject and teacher IDs
@@ -100,20 +107,23 @@ class TimetableViewModel @Inject constructor(
                 val input = generator.prepareInput()
                 val placementPlans = generator.generatePlacementPlans(input)
 
-                Log.d("TimetableInput", input.toString())
-                placementPlans
-                    .groupBy { it.classId }
-                    .forEach { (classId, plans) ->
-                        Log.d("BalancedPlacementPlans", "Class ID: $classId")
-                        plans.forEachIndexed { index, plan ->
-                            val row = plan.perDayDistribution.joinToString(", ")
-                            Log.d("BalancedPlacementPlans", "  Subject #$index → [$row]")
-                        }
-                    }
-
-                Log.d("BalancedPlacementPlans", placementPlans.toString())
+//                Log.d("TimetableInput", input.toString())
+//                placementPlans
+//                    .groupBy { it.classId }
+//                    .forEach { (classId, plans) ->
+//                        Log.d("BalancedPlacementPlans", "Class ID: $classId")
+//                        plans.forEachIndexed { index, plan ->
+//                            val row = plan.perDayDistribution.joinToString(", ")
+//                            Log.d("BalancedPlacementPlans", "  Subject #$index → [$row]")
+//                        }
+//                    }
+//
+//                Log.d("BalancedPlacementPlans", placementPlans.toString())
 
                 val finalTimetable: FinalTimetable = generator.assignTimetable(placementPlans)
+
+
+                sharedTimetableViewModel.setFinalTimetable(finalTimetable) // <-- store it in shared VM
 //                Log.d("FinalTimetable", finalTimetable.classSchedules.toString())
 //                Log.d("FinalTimetable", finalTimetable.teacherSchedules.toString())
 //                for ((classId, grid) in finalTimetable.classSchedules) {
