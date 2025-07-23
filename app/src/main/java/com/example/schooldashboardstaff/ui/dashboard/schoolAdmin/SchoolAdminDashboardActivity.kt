@@ -32,7 +32,9 @@ class SchoolAdminDashboardActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSchoolName()
 
-        loadDashboardFragment()
+        if (savedInstanceState == null) {
+            loadDashboardFragment()
+        }
         handleBackNavigation()
     }
 

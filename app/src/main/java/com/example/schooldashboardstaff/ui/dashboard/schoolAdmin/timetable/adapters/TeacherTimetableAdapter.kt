@@ -35,15 +35,20 @@ class TeacherTimetableAdapter :
         val (teacherId, grid) = getItem(position)
         val context = holder.binding.root.context
 
-        holder.binding.tvTimetableTitle.text = "Teacher: $teacherId"
+
         holder.binding.tvSemester.text = "SEM 1"
         holder.binding.tvClassTeacher.text = ""
         holder.binding.tvTotalPeriods.text = "40 periods/week"
+        var set = false
 
         for (period in 0 until 8) {
             for (day in 0 until 5) {
                 val cell = holder.cellViews[day][period]
                 val periodData = grid[day][period]
+                if(periodData!=null && !set){
+                    holder.binding.tvTimetableTitle.text = "${periodData?.teacherFullName}'s Timetable"
+                    set = true
+                }
 
                 val bigLabel = cell.findViewById<TextView>(R.id.tv_big_label)
                 val smallLabel = cell.findViewById<TextView>(R.id.tv_small_label)

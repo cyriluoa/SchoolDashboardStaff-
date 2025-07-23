@@ -34,12 +34,16 @@ class ClassTimetableAdapter :
     override fun onBindViewHolder(holder: TimetableCardViewHolder, position: Int) {
         val (classId, grid) = getItem(position)
 
-        holder.binding.tvTimetableTitle.text = "Class: $classId  Timetable"
+
 
         for (day in 0 until 5) {
             for (period in 0 until 8) {
                 val cell = holder.cellViews[day][period]
                 val periodData = grid[day][period]
+
+                if(day == 0 && period == 0){
+                    holder.binding.tvTimetableTitle.text = "${periodData?.className}'s Timetable"
+                }
 
                 val bigLabel = cell.findViewById<TextView>(R.id.tv_big_label)
                 val smallLabel = cell.findViewById<TextView>(R.id.tv_small_label)

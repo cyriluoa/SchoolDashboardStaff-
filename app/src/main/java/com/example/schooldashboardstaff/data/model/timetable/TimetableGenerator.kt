@@ -20,7 +20,7 @@ class TimetableGenerator(
                 ClassInfo(
                     id = it.id,
                     subjectAssignments = it.subjectAssignments,
-                    name = "${it.grade} - ${it.section}",
+                    name = "${it.grade}${it.section}",
                     maxPeriods = it.maxPeriods
                 )
             }

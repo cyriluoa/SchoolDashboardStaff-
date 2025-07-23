@@ -41,13 +41,15 @@
 
 
 
-        <FrameLayout
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#F5F5F5"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:visibility="gone"/>
+            android:background="#F5F5F5"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/tvWelcomeMessage"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </LinearLayout>
 
