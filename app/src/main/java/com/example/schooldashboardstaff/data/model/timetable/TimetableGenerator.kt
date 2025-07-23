@@ -1,5 +1,6 @@
 package com.example.schooldashboardstaff.data.model.timetable
 
+import android.util.Log
 import com.example.schooldashboardstaff.data.model.SchoolClass
 import com.example.schooldashboardstaff.data.model.Subject
 import com.example.schooldashboardstaff.data.model.User
@@ -182,6 +183,7 @@ class TimetableGenerator(
     fun assignTimetable(plans: List<SubjectPlacementPlan>): FinalTimetable {
         val days = 5
         val periodsPerDay = 8
+        val maxRetryTimePerClass = 20000L // 5 seconds in milliseconds
 
         val classSchedules = mutableMapOf<String, TimetableGrid>()
         val teacherSchedules = mutableMapOf<String, TimetableGrid>()
@@ -198,11 +200,41 @@ class TimetableGenerator(
         }
 
         val classGroupedPlans = plans.groupBy { it.classId }
+
+        val overallStartTime = System.currentTimeMillis()
+
         for ((classId, subjectPlans) in classGroupedPlans) {
-            if (!assignForClass(classId, subjectPlans, classSchedules[classId]!!, teacherSchedules)) {
-                throw IllegalStateException("❌ Could not assign timetable for class $classId.")
+            val classStartTime = System.currentTimeMillis()
+            var success = false
+            var attempt = 0
+
+            while (!success && System.currentTimeMillis() - classStartTime < maxRetryTimePerClass) {
+                attempt++
+                val shuffledPlans = subjectPlans.shuffled().sortedByDescending { it.periodCount }
+
+                val classGrid = classSchedules[classId]!!
+                val backupClassGrid = cloneGrid(classGrid)
+                val backupTeacherGrids = teacherSchedules.mapValues { cloneGrid(it.value) }
+
+                success = assignForClass(classId, shuffledPlans, classGrid, teacherSchedules)
+
+                if (!success) {
+                    restoreGrid(classGrid, backupClassGrid)
+                    for ((tid, grid) in teacherSchedules) {
+                        restoreGrid(grid, backupTeacherGrids[tid]!!)
+                    }
+                }
+            }
+
+            if (!success) {
+                throw IllegalStateException("❌ Timetable assignment failed for class $classId after ${System.currentTimeMillis() - classStartTime} ms.")
+            } else {
+                Log.d("TimetableAssign", "✅ Class $classId assigned in $attempt attempt(s).")
             }
         }
+
+        val overallEndTime = System.currentTimeMillis()
+        Log.i("TimetableTiming", "🕒 Timetable generated in ${overallEndTime - overallStartTime} ms")
 
         return FinalTimetable(
             classSchedules = classSchedules,
@@ -210,15 +242,38 @@ class TimetableGenerator(
         )
     }
 
+
+
     private fun assignForClass(
         classId: String,
         plans: List<SubjectPlacementPlan>,
         classGrid: TimetableGrid,
         teacherGrids: Map<String, TimetableGrid>
     ): Boolean {
-        val sortedPlans = plans.sortedByDescending { it.periodCount }
+        // Calculates how many free periods a teacher has on each day
+        fun teacherDailyFreeSlots(teacherGrid: TimetableGrid): List<Int> {
+            return List(5) { day ->
+                teacherGrid[day].count { it == null }
+            }
+        }
+
+        val sortedPlans = plans.sortedWith(
+            compareByDescending<SubjectPlacementPlan> { it.periodCount }
+                .thenByDescending { plan ->
+                    val teacherGrid = teacherGrids[plan.teacherId] ?: return@thenByDescending 0
+                    val teacherDailyFree = teacherDailyFreeSlots(teacherGrid)
+
+                    // Score based on how well the teacher can satisfy the plan’s distribution
+                    plan.perDayDistribution.withIndex().sumOf { (day, needed) ->
+                        minOf(needed, teacherDailyFree[day])
+                    }
+                }
+        )
+
         return backtrackAssign(0, sortedPlans, classId, classGrid, teacherGrids)
     }
+
+
 
     private fun backtrackAssign(
         index: Int,
@@ -243,6 +298,7 @@ class TimetableGenerator(
             }
 
             if (availableSlots.size < periodsNeeded) {
+//                Log.e("backtrackAssign availableSlots.size < periodsNeeded","Failed here")
                 return false
             }
 
@@ -259,6 +315,7 @@ class TimetableGenerator(
 
         restoreGrid(classGrid, classBackup)
         restoreGrid(teacherGrid, teacherBackup)
+//        Log.e("backtrackAssign end of","Failed here")
         return false
     }
 
@@ -286,7 +343,7 @@ class TimetableGenerator(
                 if (placed == plan.periodCount) return true
             }
         }
-
+//        Log.e("placeSubjectPeriods end of","Failed here")
         return false
     }
 
@@ -301,9 +358,6 @@ class TimetableGenerator(
             }
         }
     }
-
-
-
 
 
 
