@@ -20,6 +20,7 @@ class TimetableGenerator(
                 ClassInfo(
                     id = it.id,
                     subjectAssignments = it.subjectAssignments,
+                    name = "${it.grade} - ${it.section}",
                     maxPeriods = it.maxPeriods
                 )
             }
@@ -47,6 +48,7 @@ class TimetableGenerator(
                     TeacherInfo(
                         id = it.uid,
                         username = it.username,
+                        fullName = "${it.firstname} ${it.lastname}".trim(),
                         assignedPeriods = assignedPeriods,
                         maxPerDay = maxPerDay
                     )
@@ -65,20 +67,26 @@ class TimetableGenerator(
 
         input.classInfoMap.forEach { (classId, classInfo) ->
             classInfo.subjectAssignments.forEach { (subjectId, teacherId) ->
+                val classInfo = input.classInfoMap[classId] ?: return@forEach
                 val subject = input.subjectInfoMap[subjectId] ?: return@forEach
+                val teacher = input.teacherInfoMap[teacherId] ?: return@forEach
                 val distribution = distributePeriodsOverDays(subject.periodCount)
 
                 rawPlans.add(
                     SubjectPlacementPlan(
                         classId = classId,
+                        className = classInfo.name,
                         subjectId = subjectId,
-                        teacherId = teacherId,
                         subjectName = subject.name,
+                        teacherId = teacherId,
+                        teacherUsername = teacher.username,
+                        teacherFullName = teacher.fullName,
                         periodCount = subject.periodCount,
                         colorInt = subject.colorInt,
                         perDayDistribution = distribution
                     )
                 )
+
             }
         }
 
@@ -328,10 +336,13 @@ class TimetableGenerator(
     ): Boolean {
         val period = Period(
             classId = classId,
+            className = plan.className,
             subjectId = plan.subjectId,
-            teacherId = plan.teacherId,
             subjectName = plan.subjectName,
-            colorInt = plan.colorInt
+            colorInt = plan.colorInt,
+            teacherId = plan.teacherId,
+            teacherUsername = plan.teacherUsername,
+            teacherFullName = plan.teacherFullName
         )
 
         var placed = 0
@@ -358,8 +369,6 @@ class TimetableGenerator(
             }
         }
     }
-
-
 
 }
 

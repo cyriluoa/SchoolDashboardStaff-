@@ -116,25 +116,25 @@ class TimetableViewModel @Inject constructor(
                 val finalTimetable: FinalTimetable = generator.assignTimetable(placementPlans)
 //                Log.d("FinalTimetable", finalTimetable.classSchedules.toString())
 //                Log.d("FinalTimetable", finalTimetable.teacherSchedules.toString())
-                for ((classId, grid) in finalTimetable.classSchedules) {
-                    Log.d("Timetable", "🧑‍🏫 Class ID: $classId")
-                    for (day in 0 until grid.size) {
-                        val row = grid[day].joinToString(" | ") { period ->
-                            period?.subjectName?.take(8)?.padEnd(8) ?: "Free    "
-                        }
-                        Log.d("Timetable", "  Day ${day + 1}: $row")
-                    }
-                }
-
-                for ((teacherId, grid) in finalTimetable.teacherSchedules) {
-                    Log.d("Timetable", "👩‍🏫 Teacher ID: $teacherId")
-                    for (day in 0 until grid.size) {
-                        val row = grid[day].joinToString(" | ") { period ->
-                            period?.subjectName?.take(8)?.padEnd(8) ?: "Free    "
-                        }
-                        Log.d("Timetable", "  Day ${day + 1}: $row")
-                    }
-                }
+//                for ((classId, grid) in finalTimetable.classSchedules) {
+//                    Log.d("Timetable", "🧑‍🏫 Class ID: $classId")
+//                    for (day in 0 until grid.size) {
+//                        val row = grid[day].joinToString(" | ") { period ->
+//                            period?.subjectName?.take(8)?.padEnd(8) ?: "Free    "
+//                        }
+//                        Log.d("Timetable", "  Day ${day + 1}: $row")
+//                    }
+//                }
+//
+//                for ((teacherId, grid) in finalTimetable.teacherSchedules) {
+//                    Log.d("Timetable", "👩‍🏫 Teacher ID: $teacherId")
+//                    for (day in 0 until grid.size) {
+//                        val row = grid[day].joinToString(" | ") { period ->
+//                            period?.subjectName?.take(8)?.padEnd(8) ?: "Free    "
+//                        }
+//                        Log.d("Timetable", "  Day ${day + 1}: $row")
+//                    }
+//                }
 
 
 

@@ -61,6 +61,7 @@ class TimetableFragment : Fragment() {
 
                 if (success) {
                     Toast.makeText(requireContext(), "Timetable generated successfully ✅", Toast.LENGTH_SHORT).show()
+
                     // Optionally navigate or show UI
                 } else {
                     Toast.makeText(requireContext(), "Failed to generate timetable ❌", Toast.LENGTH_SHORT).show()
