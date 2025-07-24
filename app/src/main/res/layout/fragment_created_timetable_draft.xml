@@ -37,7 +37,7 @@
             android:layout_margin="16dp"
             android:contentDescription="Save Timetable Draft"
             android:src="@drawable/ic_save"
-            app:backgroundTint="@color/lighter_blue"
+            app:backgroundTint="@color/primary_red"
             app:tint="@android:color/white"
             app:elevation="6dp" />
 

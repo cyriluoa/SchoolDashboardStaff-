@@ -74,6 +74,8 @@ object Constants {
     const val SEARCH_CLASSES = "SEARCH_CLASSES"
     const val SEARCH_STUDENTS = "SEARCH_STUDENTS"
 
+    const val TIMETABLES_COLLECTION = "timetables"
+
 
 
 

@@ -59,4 +59,38 @@ class TimetableSwapHandler(private val finalTimetable: FinalTimetable) {
         val grid = finalTimetable.teacherSchedules[teacherId] ?: return true
         return grid[day][period] == null
     }
+
+    fun performSwap(classId: String, day1: Int, period1: Int, day2: Int, period2: Int) {
+        val classGrid = finalTimetable.classSchedules[classId] ?: return
+        val teacher1 = classGrid[day1][period1]?.teacherId
+        val teacher2 = classGrid[day2][period2]?.teacherId
+
+        // Swap in class timetable
+        val temp = classGrid[day1][period1]
+        classGrid[day1][period1] = classGrid[day2][period2]
+        classGrid[day2][period2] = temp
+
+        // Swap in teacher timetable if applicable
+        if (teacher1 != null) {
+            val t1Grid = finalTimetable.teacherSchedules[teacher1]
+            t1Grid?.let {
+                val tempPeriod = it[day1][period1]
+                it[day1][period1] = it[day2][period2]
+                it[day2][period2] = tempPeriod
+            }
+        }
+
+        if (teacher2 != null && teacher2 != teacher1) {
+            val t2Grid = finalTimetable.teacherSchedules[teacher2]
+            t2Grid?.let {
+                val tempPeriod = it[day1][period1]
+                it[day1][period1] = it[day2][period2]
+                it[day2][period2] = tempPeriod
+            }
+        }
+    }
+
+    fun getFinalTimetable(): FinalTimetable = finalTimetable
+
+
 }

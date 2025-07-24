@@ -23,20 +23,25 @@ class ClassTimetableListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = ClassTimetableAdapter(swapViewModel)
+        adapter = ClassTimetableAdapter(swapViewModel,sharedViewModel)
         binding.recyclerView.adapter = adapter
 
-        // 1. Submit timetable data
         sharedViewModel.finalTimetable.observe(viewLifecycleOwner) { timetable ->
             timetable?.let {
-                adapter.submitList(it.classSchedules.toList())
+                val copied = it.classSchedules.map { (classId, grid) ->
+                    classId to grid.map { it.copyOf() }.toTypedArray()
+                }
+                adapter.submitList(copied)
                 swapViewModel.setFinalTimetable(it)
             }
         }
+
 
         // 2. Observe swappability updates
         swapViewModel.swappabilityGrid.observe(viewLifecycleOwner) { grid ->
             adapter.updateSwappabilityGrid(grid)
         }
+
+
     }
 }

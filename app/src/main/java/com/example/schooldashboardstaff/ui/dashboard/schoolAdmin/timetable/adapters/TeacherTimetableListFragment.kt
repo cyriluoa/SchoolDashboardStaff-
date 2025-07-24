@@ -25,7 +25,13 @@ class TeacherTimetableListFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
         sharedViewModel.finalTimetable.observe(viewLifecycleOwner) { timetable ->
-            adapter.submitList(timetable?.teacherSchedules?.toList() ?: emptyList())
+            timetable?.let {
+                val copied = it.teacherSchedules.map { (teacherId, grid) ->
+                    teacherId to grid.map { it.copyOf() }.toTypedArray()
+                }
+                adapter.submitList(copied)
+            }
         }
+
     }
 }

@@ -1,18 +1,22 @@
 package com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.timetable.adapters
 
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.schooldashboardstaff.R
 import com.example.schooldashboardstaff.data.model.timetable.TimetableGrid
 import com.example.schooldashboardstaff.databinding.ItemTimetableCardBinding
+import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.timetable.SharedTimetableViewModel
 import com.example.schooldashboardstaff.ui.dashboard.schoolAdmin.timetable.swap.SwapViewModel
 
 class ClassTimetableAdapter(
-    private val viewModel: SwapViewModel
+    private val viewModel: SwapViewModel,
+    private val timetableViewModel: SharedTimetableViewModel
 ) : ListAdapter<Pair<String, TimetableGrid>, TimetableCardViewHolder>(DiffCallback) {
 
     private var selectedPosition: Triple<String, Int, Int>? = null
@@ -101,6 +105,47 @@ class ClassTimetableAdapter(
                     notifyDataSetChanged()
                     true
                 }
+
+                cell.setOnClickListener {
+                    val selected = selectedPosition
+                    if (selected != null && classId == selected.first) {
+                        val (selClassId, selDay, selPeriod) = selected
+
+                        // Don't act if clicked on same cell again
+                        if (selDay == day && selPeriod == period) return@setOnClickListener
+
+                        val swappable = swappabilityGrid?.getOrNull(day)?.getOrNull(period)
+
+                        if (swappable == true) {
+                            // ✅ Swappable — show dialog
+                            AlertDialog.Builder(holder.itemView.context)
+                                .setTitle("Confirm Swap")
+                                .setMessage("Do you want to swap the selected period with this one?")
+                                .setPositiveButton("Yes") { _, _ ->
+                                    // 🔄 Perform the swap logic
+                                    viewModel.performSwap(selClassId, selDay, selPeriod, day, period)?.let {
+                                        timetableViewModel.setFinalTimetable(it)
+                                    }
+
+                                    // Clear selection after swap
+                                    selectedPosition = null
+                                    selectedClassId = null
+                                    viewModel.clearSelection()
+                                    notifyDataSetChanged()
+                                }
+                                .setNegativeButton("Cancel", null)
+                                .show()
+                        } else if (swappable == false) {
+                            // ❌ Not swappable — show toast
+                            Toast.makeText(
+                                holder.itemView.context,
+                                "Can't swap with this period due to teacher conflict.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+
             }
         }
 

@@ -13,3 +13,5 @@ data class Period(
 
 
 typealias TimetableGrid = Array<Array<Period?>> // [5][8] -> 5 days × 8 periods
+typealias SerializableTimetableGrid = List<List<Period?>>
+
